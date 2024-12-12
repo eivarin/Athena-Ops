@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - traefik.yml
   - homarr.yml
+  - bjw-s.yml
