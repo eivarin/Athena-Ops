@@ -1,0 +1,12 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: traefik
+  namespace: flux-system
+spec:
+  chart: traefik
+  version: 33.2.0
+  interval: 24h
+  sourceRef:
+    kind: HelmRepository
+    name: traefik

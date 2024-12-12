@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pmox1
+spec:
+  type: ExternalName
+  ports:
+    - name: https
+      port: ${SECRET_PMX_PORT}
+  externalName: ${SECRET_PMX1_ADDR}

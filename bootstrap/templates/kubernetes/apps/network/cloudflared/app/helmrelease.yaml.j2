@@ -46,7 +46,7 @@ spec:
             args:
               - tunnel
               - --config
-              - /etc/cloudflared/config/config.yaml
+              - /etc/cloudflared/config/config.yml
               - run
               - "$(TUNNEL_ID)"
             probes:
@@ -97,8 +97,8 @@ spec:
         type: configMap
         name: cloudflared-configmap
         globalMounts:
-          - path: /etc/cloudflared/config/config.yaml
-            subPath: config.yaml
+          - path: /etc/cloudflared/config/config.yml
+            subPath: config.yml
             readOnly: true
       creds:
         type: secret

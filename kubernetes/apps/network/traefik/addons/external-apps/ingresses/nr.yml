@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nr
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  ingressClassName: traefik-private
+  rules:
+  - host: &host nr.${SECRET_PRIVATE_DOMAIN}
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: nr
+            port:
+              number: ${SECRET_NR_PORT}
+  tls:
+    - hosts:
+        - *host
+      secretName: ${SECRET_PRIVATE_DOMAIN/./-}-tls

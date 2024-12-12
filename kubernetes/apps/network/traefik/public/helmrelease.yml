@@ -1,0 +1,77 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: traefik-public
+spec:
+  chartRef:
+    kind: HelmChart
+    name: traefik
+    namespace: flux-system
+  interval: 1h # this is for drifting of the helm created resources
+  values:
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: ""
+
+    ingressClass:  # @schema additionalProperties: false
+      enabled: true
+      isDefaultClass: false
+      name: "traefik-public"
+
+    globalArguments:
+      - "--global.sendanonymoususage=false"
+      - "--global.checknewversion=false"
+
+    additionalArguments:
+      - "--serversTransport.insecureSkipVerify=true"
+      - "--log.level=INFO"
+
+    deployment:
+      enabled: true
+      replicas: 1
+      annotations: {}
+      podAnnotations: {}
+      additionalContainers: []
+      initContainers: []
+
+    ports:
+      web:
+        redirectTo:
+          port: websecure
+          priority: 10
+      websecure:
+        http3:
+          enabled: true
+        advertisedPort: 4443
+        tls:
+          enabled: true
+          
+    ingressRoute:
+      dashboard:
+        enabled: false
+
+    experimental:
+      plugins:
+        fail2ban:
+          moduleName: "github.com/tomMoulard/fail2ban"
+          version: "v0.8.3"
+
+    providers:
+      kubernetesCRD:
+        enabled: true
+        ingressClass: traefik-public
+        allowExternalNameServices: true
+      kubernetesIngress:
+        enabled: true
+        allowExternalNameServices: true
+        publishedService:
+          enabled: true
+
+    rbac:
+      enabled: true
+    service:
+      enabled: true
+      type: LoadBalancer
+      annotations:
+        lbipam.cilium.io/ips: "${SECRET_TRAEFIK_PUBLIC_ADDR}"
+      spec:
+        externalTrafficPolicy: Cluster

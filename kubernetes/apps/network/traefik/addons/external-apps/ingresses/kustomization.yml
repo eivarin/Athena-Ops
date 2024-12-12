@@ -1,0 +1,16 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - adguard.yml
+  - hass.yml
+  - nc.yml
+  - nr.yml
+  - omv.yml
+  - opn.yml
+  - pmox.yml
+  - pmox1.yml
+  - pmox2.yml
+  - ptero-node1.yml
+  - ptero.yml
+  - vw.yml

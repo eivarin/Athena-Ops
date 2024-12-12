@@ -7,7 +7,7 @@ KUBERNETES_DIR=$1
 [[ -z "${KUBERNETES_DIR}" ]] && echo "Kubernetes location not specified" && exit 1
 
 kustomize_args=("--load-restrictor=LoadRestrictionsNone")
-kustomize_config="kustomization.yaml"
+kustomize_config="kustomization.yml"
 kubeconform_args=(
     "-strict"
     "-ignore-missing-schemas"
@@ -21,7 +21,7 @@ kubeconform_args=(
 )
 
 echo "=== Validating standalone manifests in ${KUBERNETES_DIR}/flux ==="
-find "${KUBERNETES_DIR}/flux" -maxdepth 1 -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
+find "${KUBERNETES_DIR}/flux" -maxdepth 1 -type f -name '*.yml' -print0 | while IFS= read -r -d $'\0' file;
 do
     kubeconform "${kubeconform_args[@]}" "${file}"
     if [[ ${PIPESTATUS[0]} != 0 ]]; then

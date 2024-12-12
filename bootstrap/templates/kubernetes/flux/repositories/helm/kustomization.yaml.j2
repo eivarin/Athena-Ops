@@ -2,18 +2,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./bjw-s.yaml
-  - ./cilium.yaml
-  - ./coredns.yaml
-  - ./jetstack.yaml
-  - ./metrics-server.yaml
-  - ./openebs.yaml
-  - ./postfinance.yaml
-  - ./prometheus-community.yaml
-  - ./spegel.yaml
-  - ./stakater.yaml
+  - ./bjw-s.yml
+  - ./cilium.yml
+  - ./coredns.yml
+  - ./jetstack.yml
+  - ./metrics-server.yml
+  - ./openebs.yml
+  - ./postfinance.yml
+  - ./prometheus-community.yml
+  - ./spegel.yml
+  - ./stakater.yml
   #% if bootstrap_cloudflare.enabled %#
-  - ./external-dns.yaml
-  - ./ingress-nginx.yaml
-  - ./k8s-gateway.yaml
+  - ./external-dns.yml
+  - ./ingress-nginx.yml
+  - ./k8s-gateway.yml
   #% endif %#

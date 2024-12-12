@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ptero-node1
+spec:
+  type: ExternalName
+  ports:
+    - name: https
+      port: ${SECRET_PTERO_NODE1_PORT}
+  externalName: ${SECRET_PTERO_NODE1_ADDR}

@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nc
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  ingressClassName: traefik-private
+  rules:
+  - host: &host nc.${SECRET_PRIVATE_DOMAIN}
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: nc
+            port:
+              number: ${SECRET_NC_PORT}
+  tls:
+    - hosts:
+        - *host
+      secretName: ${SECRET_PRIVATE_DOMAIN/./-}-tls
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nc-public
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    cert-manager.io/cluster-issuer: letsencrypt-production
+spec:
+  ingressClassName: traefik-public
+  rules:
+  - host: &host nc.${SECRET_PUBLIC_DOMAIN1}
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: nc
+            port:
+              number: ${SECRET_NC_PORT}
+  tls:
+    - hosts:
+        - *host
+      secretName: nc-${SECRET_PUBLIC_DOMAIN1/./-}-tls

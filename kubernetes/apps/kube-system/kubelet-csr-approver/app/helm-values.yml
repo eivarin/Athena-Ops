@@ -1,0 +1,3 @@
+---
+providerRegex: ^(athena-server1|athena-server2|athena-server3|athena-agent1|athena-agent2|athena-agent3|athena-agent4)$
+bypassDnsResolution: true

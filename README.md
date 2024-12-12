@@ -2,7 +2,7 @@
 
 Welcome to my opinionated and extensible template for deploying a single Kubernetes cluster. The goal of this project is to make it easier for people interested in using Kubernetes to deploy a cluster at home on bare-metal or VMs. This template closely mirrors my personal [home-ops](https://github.com/onedr0p/home-ops) repository.
 
-At a high level this project makes use of [makejinja](https://github.com/mirkolenz/makejinja) to read in a [configuration file](./config.sample.yaml) which renders out templates that will allow you to install and manage your Kubernetes cluster with.
+At a high level this project makes use of [makejinja](https://github.com/mirkolenz/makejinja) to read in a [configuration file](./config.sample.yml) which renders out templates that will allow you to install and manage your Kubernetes cluster with.
 
 ## ✨ Features
 
@@ -124,15 +124,15 @@ You have two different options for setting up your local workstation.
 ### 🔧 Stage 3: Bootstrap configuration
 
 > [!NOTE]
-> The [config.sample.yaml](./config.sample.yaml) file contains config that is **vital** to the bootstrap process.
+> The [config.sample.yml](./config.sample.yml) file contains config that is **vital** to the bootstrap process.
 
-1. Generate the `config.yaml` from the [config.sample.yaml](./config.sample.yaml) configuration file.
+1. Generate the `config.yml` from the [config.sample.yml](./config.sample.yml) configuration file.
 
     ```sh
     task init
     ```
 
-2. Fill out the `config.yaml` configuration file using the comments in that file as a guide.
+2. Fill out the `config.yml` configuration file using the comments in that file as a guide.
 
 3. Run the following command which will generate all the files needed to continue.
 
@@ -215,7 +215,7 @@ _Mic check, 1, 2_ - In a few moments applications should be lighting up like Chr
 
 1. Output all the common resources in your cluster.
 
-    📍 _Feel free to use the provided [kubernetes tasks](.taskfiles/kubernetes/Taskfile.yaml) for validation of cluster resources or continue to get familiar with the `kubectl` and `flux` CLI tools._
+    📍 _Feel free to use the provided [kubernetes tasks](.taskfiles/kubernetes/Taskfile.yml) for validation of cluster resources or continue to get familiar with the `kubectl` and `flux` CLI tools._
 
     ```sh
     task kubernetes:resources
@@ -257,7 +257,7 @@ If you're having trouble with DNS be sure to check out these two GitHub discussi
 
 #### 📜 Certificates
 
-By default this template will deploy a wildcard certificate using the Let's Encrypt **staging environment**, which prevents you from getting rate-limited by the Let's Encrypt production servers if your cluster doesn't deploy properly (for example due to a misconfiguration). Once you are sure you will keep the cluster up for more than a few hours be sure to switch to the production servers as outlined in `config.yaml`.
+By default this template will deploy a wildcard certificate using the Let's Encrypt **staging environment**, which prevents you from getting rate-limited by the Let's Encrypt production servers if your cluster doesn't deploy properly (for example due to a misconfiguration). Once you are sure you will keep the cluster up for more than a few hours be sure to switch to the production servers as outlined in `config.yml`.
 
 📍 _You will need a production certificate to reach internet-exposed applications through `cloudflared`._
 
@@ -282,7 +282,7 @@ By default Flux will periodically check your git repository for changes. In orde
     https://flux-webhook.${bootstrap_cloudflare.domain}/hook/12ebd1e363c641dc3c2e430ecf3cee2b3c7a5ac9e1234506f6f5f3ce1230e123
     ```
 
-3. Navigate to the settings of your repository on Github, under "Settings/Webhooks" press the "Add webhook" button. Fill in the webhook URL and your `bootstrap_github_webhook_token` secret in `config.yaml`, Content type: `application/json`, Events: Choose Just the push event, and save.
+3. Navigate to the settings of your repository on Github, under "Settings/Webhooks" press the "Add webhook" button. Fill in the webhook URL and your `bootstrap_github_webhook_token` secret in `config.yml`, Content type: `application/json`, Events: Choose Just the push event, and save.
 
 ## 💥 Reset
 
@@ -296,7 +296,7 @@ task talos:reset # --force
 
 #### ⚙️ Updating Talos node configuration
 
-📍 _Ensure you have updated `talconfig.yaml` and any patches with your updated configuration._
+📍 _Ensure you have updated `talconfig.yml` and any patches with your updated configuration._
 
 ```sh
 # (Re)generate the Talos config
@@ -308,7 +308,7 @@ task talos:apply-node HOSTNAME=? MODE=?
 
 #### ⬆️ Updating Talos and Kubernetes versions
 
-📍 _Ensure the `talosVersion` and `kubernetesVersion` in `talhelper.yaml` are up-to-date with the version you wish to upgrade to._
+📍 _Ensure the `talosVersion` and `kubernetesVersion` in `talhelper.yml` are up-to-date with the version you wish to upgrade to._
 
 ```sh
 # Upgrade node to a newer Talos version
