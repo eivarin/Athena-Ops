@@ -5,8 +5,9 @@ resources:
   - ./namespace.yml
   - ./cilium/ks.yml
   - ./coredns/ks.yml
+  - ./kubelet-csr-approver/ks.yml
   - ./metrics-server/ks.yml
+  - ./node-feature-discovery/ks.yml
   - ./reflector/ks.yml
   - ./reloader/ks.yml
-  - ./kubelet-csr-approver/ks.yml
   - ./spegel/ks.yml
