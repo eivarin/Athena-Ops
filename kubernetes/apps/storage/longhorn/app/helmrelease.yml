@@ -1,0 +1,62 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: longhorn
+spec:
+  interval: 5m
+  timeout: 15m
+  chart:
+    spec:
+      chart: longhorn
+      version: 1.7.x
+      sourceRef:
+        kind: HelmRepository
+        name: longhorn-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    crds: CreateReplace
+    remediation:
+        retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+        retries: 3
+  values:
+    persistence:
+      # Set to false to pick another CSI as default
+      defaultClass: true
+      # Increase to 3 for a multi-node cluster
+      defaultClassReplicaCount: 1
+      reclaimPolicy: Retain
+    ingress:
+      enabled: true
+      ingressClassName: traefik-private
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        external-dns.alpha.kubernetes.io/target: ${SECRET_TRAEFIK_PRIVATE_ADDR}
+      host: longhorn.${SECRET_PRIVATE_DOMAIN}
+      tls: true
+      tlsSecret: ${SECRET_PRIVATE_DOMAIN//./-}-tls
+    defaultSettings:
+      backupTarget: nfs://${SECRET_NFS_ADDR}:/kubernetes/LonghornBackups
+      defaultReplicaCount: 2
+      autoCleanupSystemGeneratedSnapshot: true
+      # storageOverProvisioningPercentage: 100
+      # storageMinimalAvailablePercentage: 10
+      # restoreVolumeRecurringJobs: true
+      # autoCleanupRecurringJobBackupSnapshot: true
+      # # concurrentAutomaticEngineUpgradePerNodeLimit: 1
+      # orphanAutoDeletion: true
+      # snapshotDataIntegrity: enable
+      # snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: false
+      # snapshotDataIntegrityCronjob: "0 4 * * *"
+      # fastReplicaRebuildEnabled: true
+      # removeSnapshotsDuringFilesystemTrim: true
+      # v1DataEngine: true
+      # v2DataEngine: false
+      # allowCollectingLonghornUsageMetrics: false
+      # freezeFilesystemForSnapshot: enabled
+      # autoCleanupSnapshotWhenDeleteBackup: true
+      # rwxVolumeFastFailover: true
