@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - ./namespace.yml
   - ./traefik/ks.yml
-  - ./k8s-gateway/ks.yml
+  # - ./k8s-gateway/ks.yml
   - ./external-dns/ks.yml
