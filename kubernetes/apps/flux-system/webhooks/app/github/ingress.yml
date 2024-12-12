@@ -8,17 +8,17 @@ metadata:
 spec:
   ingressClassName: traefik-public
   rules:
-    - host: &host "flux.webhook.${SECRET_PUBLIC_DOMAIN1}"
-      http:
-        paths:
-          - path: /hook/
-            pathType: Prefix
-            backend:
-              service:
-                name: webhook-receiver
-                port:
-                  number: 80
-      tls:
-        - hosts:
-            - *host
-          secretName: webhooks-${SECRET_PUBLIC_DOMAIN1//./-}-tls
+  - host: &host "flux.webhook.${SECRET_PUBLIC_DOMAIN1}"
+    http:
+      paths:
+        - path: /hook/
+          pathType: Prefix
+          backend:
+            service:
+              name: webhook-receiver
+              port:
+                number: 80
+  tls:
+    - hosts:
+        - *host
+      secretName: webhooks-${SECRET_PUBLIC_DOMAIN1//./-}-tls
