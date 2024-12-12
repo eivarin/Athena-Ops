@@ -5,6 +5,7 @@ resources:
   - ./namespace.yml
   - ./cilium/ks.yml
   - ./coredns/ks.yml
+  - ./intel-device-plugin/ks.yml
   - ./kubelet-csr-approver/ks.yml
   - ./metrics-server/ks.yml
   - ./node-feature-discovery/ks.yml
