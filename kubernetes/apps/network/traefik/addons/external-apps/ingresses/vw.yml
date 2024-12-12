@@ -1,21 +1,27 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: vw
-  annotations: 
-    kubernetes.io/ingress.class: traefik-private
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
-  entryPoints:
-    - websecure
-  routes:
-  - match: Host(`vw.${SECRET_PRIVATE_DOMAIN}`)
-    kind: Rule
-    services:
-    - name: vw
-      scheme: http
-      port: ${SECRET_VW_PORT}
+  ingressClassName: traefik-private
+  rules:
+  - host: &host vw.${SECRET_PRIVATE_DOMAIN}
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: vw
+            port:
+              number: ${SECRET_VW_PORT}
   tls:
-    secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
+    - hosts:
+        - *host
+      secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
+      
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
