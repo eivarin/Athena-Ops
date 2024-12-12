@@ -47,10 +47,11 @@ spec:
         selector:
           dnsZones:
             - "${SECRET_PUBLIC_DOMAIN1}"
-      - http01:
-          ingress:
-            ingressClassName: traefik-public
-        selector:
-          dnsZones:
-            - "vw.${SECRET_PUBLIC_DOMAIN1}"
             - "${SECRET_PUBLIC_DOMAIN2}"
+      # - http01:
+      #     ingress:
+      #       ingressClassName: traefik-public
+      #   selector:
+      #     dnsZones:
+      #       - "vw.${SECRET_PUBLIC_DOMAIN1}"
+      #       - "${SECRET_PUBLIC_DOMAIN2}"
