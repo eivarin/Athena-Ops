@@ -7,10 +7,12 @@ resources:
   - ./coredns.yml
   - ./external-dns.yml
   - ./homarr.yml
+  - ./intel.yml
   - ./jetstack.yml
   - ./k8s-gateway.yml
   - ./longhorn-charts.yml
   - ./metrics-server.yml
+  - ./node-feature-discovery.yml
   - ./postfinance.yml
   - ./prometheus-community.yml
   - ./reflector.yml
