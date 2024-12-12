@@ -24,6 +24,7 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     cert-manager.io/cluster-issuer: letsencrypt-production
+    external-dns.alpha.kubernetes.io/target: ${SECRET_PUBLIC_DOMAIN1}
 spec:
   ingressClassName: traefik-public
   rules:
