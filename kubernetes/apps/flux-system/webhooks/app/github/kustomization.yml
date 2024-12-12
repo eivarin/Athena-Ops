@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./secret.sops.yml
   - ./receiver.yml
+  - ./ingress.yml
