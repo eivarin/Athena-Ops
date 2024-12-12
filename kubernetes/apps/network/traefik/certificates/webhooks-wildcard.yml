@@ -4,7 +4,7 @@ kind: Certificate
 metadata:
   name: "webhooks-${SECRET_PUBLIC_DOMAIN1//./-}-production"
 spec:
-  secretName: "webhooks-${SECRET_PUBLIC_DOMAIN1//./-}-production-tls"
+  secretName: "webhooks-${SECRET_PUBLIC_DOMAIN1//./-}-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
