@@ -8,6 +8,7 @@ resources:
   - ./external-dns.yml
   - ./jetstack.yml
   - ./k8s-gateway.yml
+  - ./longhorn-charts.yml
   - ./metrics-server.yml
   - ./postfinance.yml
   - ./prometheus-community.yml
