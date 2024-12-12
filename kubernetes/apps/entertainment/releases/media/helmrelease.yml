@@ -406,7 +406,7 @@ spec:
               tag: latest
             # command: ["/bin/bash", "-c", "while ! timeout 1 bash -c '</dev/tcp/media-db-postgresql/5432'; do sleep 1; done; chmod +x /app/entry.sh; /app/entry.sh"]
             env:
-              POSTGRES_USER: entertainment
+              POSTGRES_USER: media
               POSTGRES_PASSWORD: password
               POSTGRES_IP: postgresql
               POSTGRES_PORT: 5432
