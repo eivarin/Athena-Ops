@@ -768,7 +768,7 @@ spec:
       media:
         enabled: true
         type: persistentVolumeClaim
-        existingClaim: entertainment-nfs
+        existingClaim:  entertainment-storage-nfs-media
         globalMounts:
           - path: /shared/Media
             readOnly: false
