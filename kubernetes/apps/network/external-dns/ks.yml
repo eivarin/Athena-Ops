@@ -7,7 +7,7 @@ spec:
   targetNamespace: network
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/network/external-dns/cloudflare
+  path: ./kubernetes/apps/network/external-dns/cloudflare
   prune: true
   sourceRef:
     kind: GitRepository

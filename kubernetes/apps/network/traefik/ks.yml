@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager-issuers
-  path: ./kubernetes/main/apps/network/traefik/certificates
+  path: ./kubernetes/apps/network/traefik/certificates
   prune: true
   sourceRef:
     kind: GitRepository
@@ -33,7 +33,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: traefik-certificates
-  path: ./kubernetes/main/apps/network/traefik/public
+  path: ./kubernetes/apps/network/traefik/public
   prune: true
   sourceRef:
     kind: GitRepository
@@ -55,7 +55,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: traefik-certificates
-  path: ./kubernetes/main/apps/network/traefik/private
+  path: ./kubernetes/apps/network/traefik/private
   prune: true
   sourceRef:
     kind: GitRepository
@@ -78,7 +78,7 @@ spec:
   dependsOn:
     - name: traefik-public
     - name: traefik-private
-  path: ./kubernetes/main/apps/network/traefik/addons
+  path: ./kubernetes/apps/network/traefik/addons
   prune: true
   sourceRef:
     kind: GitRepository
