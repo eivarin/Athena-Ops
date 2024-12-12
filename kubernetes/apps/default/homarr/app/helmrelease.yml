@@ -26,7 +26,7 @@ spec:
       tag: "0.15.9"
     env:
       # -- Your local time zone
-      TZ: "Europe/Lisbon"
+      TZ: "${TIMEZONE}"
       # -- Colors and preferences, possible values dark / light
       DEFAULT_COLOR_SCHEME: "dark"
       # -- Enabled authentication methods. Multiple providers can be enabled with by separating them with , (ex. AUTH_PROVIDER=credentials,oidc, it is highly recommended to just enable one provider).
@@ -122,7 +122,7 @@ spec:
       # -- Ingress class name
       ingressClassName: traefik-private
       # -- Ingress annotations
-      annotations: 
+      annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
       # -- Ingress hosts configuration
       hosts:
@@ -130,7 +130,7 @@ spec:
           paths:
             - path: /
       # -- Ingress TLS configuration
-      tls: 
+      tls:
        - secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
          hosts:
            - ${SECRET_PRIVATE_DOMAIN}
