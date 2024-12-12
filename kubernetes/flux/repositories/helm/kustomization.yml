@@ -9,8 +9,8 @@ resources:
   - ./jetstack.yml
   - ./k8s-gateway.yml
   - ./metrics-server.yml
-  - ./openebs.yml
   - ./postfinance.yml
   - ./prometheus-community.yml
   - ./spegel.yml
   - ./stakater.yml
+  - ./traefik.yml
