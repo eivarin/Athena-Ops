@@ -368,7 +368,7 @@ spec:
           app:
             image:
               repository: jellyfin/jellyfin
-              tag: 10.8.13
+              tag: 10.10.3
             env:
               PUID: 1000
               PGID: 1000
