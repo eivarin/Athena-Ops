@@ -13,6 +13,7 @@ resources:
   - ./metrics-server.yml
   - ./postfinance.yml
   - ./prometheus-community.yml
+  - ./reflector.yml
   - ./spegel.yml
   - ./stakater.yml
   - ./traefik.yml
