@@ -6,6 +6,7 @@ resources:
   - ./cilium.yml
   - ./coredns.yml
   - ./external-dns.yml
+  - ./homarr.yml
   - ./jetstack.yml
   - ./k8s-gateway.yml
   - ./longhorn-charts.yml

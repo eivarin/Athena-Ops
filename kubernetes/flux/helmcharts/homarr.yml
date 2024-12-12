@@ -1,0 +1,12 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: homarr
+  namespace: flux-system
+spec:
+  chart: homarr
+  version: 1.3.x
+  interval: 24h
+  sourceRef:
+    kind: HelmRepository
+    name: homarr
