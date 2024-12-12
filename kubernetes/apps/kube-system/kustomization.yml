@@ -6,6 +6,7 @@ resources:
   - ./cilium/ks.yml
   - ./coredns/ks.yml
   - ./metrics-server/ks.yml
+  - ./reflector/ks.yml
   - ./reloader/ks.yml
   - ./kubelet-csr-approver/ks.yml
   - ./spegel/ks.yml
