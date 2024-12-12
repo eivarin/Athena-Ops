@@ -2,16 +2,16 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "webhooks-${SECRET_PUBLIC_DOMAIN1//./-}-production"
+  name: "webhook-${SECRET_PUBLIC_DOMAIN1//./-}-production"
 spec:
-  secretName: "webhooks-${SECRET_PUBLIC_DOMAIN1//./-}-tls"
+  secretName: "webhook-${SECRET_PUBLIC_DOMAIN1//./-}-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "webhooks.${SECRET_PUBLIC_DOMAIN1}"
+  commonName: "webhook.${SECRET_PUBLIC_DOMAIN1}"
   dnsNames:
-  - "webhooks.${SECRET_PUBLIC_DOMAIN1}"
-  - "*.webhooks.${SECRET_PUBLIC_DOMAIN1}"
+  - "webhook.${SECRET_PUBLIC_DOMAIN1}"
+  - "*.webhook.${SECRET_PUBLIC_DOMAIN1}"
   secretTemplate:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"

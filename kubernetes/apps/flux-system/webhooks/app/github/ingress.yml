@@ -22,4 +22,4 @@ spec:
   tls:
     - hosts:
         - *host
-      secretName: webhooks-${SECRET_PUBLIC_DOMAIN1//./-}-tls
+      secretName: webhook-${SECRET_PUBLIC_DOMAIN1//./-}-tls
