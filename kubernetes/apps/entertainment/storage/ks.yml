@@ -1,0 +1,18 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app entertainment-storage-nfs
+  namespace: flux-system
+spec:
+  targetNamespace: entertainment
+  interval: 10m0s
+  retryInterval: 1m
+  path: ./kubernetes/apps/entertainment/storage/nfs
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  postBuild:
+    substitute:
+      KS_NAME: *app
+
