@@ -5,3 +5,4 @@ resources:
   - ./namespace.yml
   - ./DBs/ks.yml
   - ./storage/ks.yml
+  - ./releases/ks.yml
