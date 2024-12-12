@@ -15,7 +15,7 @@ spec:
       scheme: http
       port: ${SECRET_VW_PORT}
   tls:
-    secretName: ${SECRET_PRIVATE_DOMAIN/./-}-tls
+    secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -41,4 +41,4 @@ spec:
   tls:
     - hosts:
         - *host
-      secretName: vw-${SECRET_PUBLIC_DOMAIN1/./-}-tls
+      secretName: vw-${SECRET_PUBLIC_DOMAIN1//./-}-tls

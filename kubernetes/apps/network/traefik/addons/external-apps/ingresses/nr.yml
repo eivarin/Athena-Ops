@@ -20,4 +20,4 @@ spec:
   tls:
     - hosts:
         - *host
-      secretName: ${SECRET_PRIVATE_DOMAIN/./-}-tls
+      secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
