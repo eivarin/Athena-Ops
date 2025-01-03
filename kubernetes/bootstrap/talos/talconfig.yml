@@ -124,3 +124,19 @@ nodes:
             - siderolabs/iscsi-tools
             - siderolabs/qemu-guest-agent
             - siderolabs/util-linux-tools
+    machineDisks:
+      - device: /dev/sdb
+        partitions:
+          - mountpoint: /var/mnt/nvme
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/nvme
+                type: bind
+                source: /var/mnt/nvme
+                options:
+                  - bind
+                  - rshared
+                  - rw
