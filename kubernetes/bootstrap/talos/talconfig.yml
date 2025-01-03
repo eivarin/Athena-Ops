@@ -1,10 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 ---
-# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-talosVersion: v1.8.3
-# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+talosVersion: v1.9.1
 kubernetesVersion: v1.31.3
-
 clusterName: "athena"
 endpoint: https://10.0.2.100:6443
 
@@ -21,119 +18,6 @@ additionalMachineCertSans: *sans
 # Disable built-in Flannel to use Cilium
 cniConfig:
   name: none
-
-nodes:
-  - hostname: "athena-server1"
-    ipAddress: "10.0.2.101"
-    installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/41a955ca5789ffeef5df04e525e52c1865e1287921b7cb68d7f1d91983af60b7
-    controlPlane: true
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:02:c6:b9"
-        dhcp: false
-        addresses:
-          - "10.0.2.101/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "10.0.2.1"
-        mtu: 1500
-        vip:
-          ip: "10.0.2.100"
-  - hostname: "athena-server2"
-    ipAddress: "10.0.2.102"
-    installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/41a955ca5789ffeef5df04e525e52c1865e1287921b7cb68d7f1d91983af60b7
-    controlPlane: true
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:65:d4:57"
-        dhcp: false
-        addresses:
-          - "10.0.2.102/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "10.0.2.1"
-        mtu: 1500
-        vip:
-          ip: "10.0.2.100"
-  - hostname: "athena-server3"
-    ipAddress: "10.0.2.103"
-    installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/41a955ca5789ffeef5df04e525e52c1865e1287921b7cb68d7f1d91983af60b7
-    controlPlane: true
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:14:1a:fb"
-        dhcp: false
-        addresses:
-          - "10.0.2.103/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "10.0.2.1"
-        mtu: 1500
-        vip:
-          ip: "10.0.2.100"
-  - hostname: "athena-agent1"
-    ipAddress: "10.0.2.111"
-    installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/41a955ca5789ffeef5df04e525e52c1865e1287921b7cb68d7f1d91983af60b7
-    controlPlane: false
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:fe:55:4e"
-        dhcp: false
-        addresses:
-          - "10.0.2.111/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "10.0.2.1"
-        mtu: 1500
-  - hostname: "athena-agent2"
-    ipAddress: "10.0.2.112"
-    installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/41a955ca5789ffeef5df04e525e52c1865e1287921b7cb68d7f1d91983af60b7
-    controlPlane: false
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:92:80:a8"
-        dhcp: false
-        addresses:
-          - "10.0.2.112/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "10.0.2.1"
-        mtu: 1500
-  - hostname: "athena-agent3"
-    ipAddress: "10.0.2.113"
-    installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/41a955ca5789ffeef5df04e525e52c1865e1287921b7cb68d7f1d91983af60b7
-    controlPlane: false
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:e4:db:35"
-        dhcp: false
-        addresses:
-          - "10.0.2.113/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "10.0.2.1"
-        mtu: 1500
-  - hostname: "athena-agent4"
-    ipAddress: "10.0.2.114"
-    installDisk: "/dev/sda"
-    talosImageURL: factory.talos.dev/installer/41a955ca5789ffeef5df04e525e52c1865e1287921b7cb68d7f1d91983af60b7
-    controlPlane: false
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "bc:24:11:2e:92:07"
-        dhcp: false
-        addresses:
-          - "10.0.2.114/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "10.0.2.1"
-        mtu: 1500
 
 # Global patches
 patches:
@@ -156,4 +40,87 @@ controlPlane:
 
 worker:
   patches:
-    - "@./patches/worker/role.yml"
+    - |-
+      machine:
+        nodeLabels:
+          node-role.kubernetes.io/worker: ""
+
+nodes:
+  - hostname: "athena-server1"
+    ipAddress: "10.0.2.101"
+    installDisk: "/dev/sda"
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:02:c6:b9"
+        dhcp: false
+        addresses:
+          - "10.0.2.101/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "10.0.2.1"
+        mtu: 1500
+        vip:
+          ip: "10.0.2.100"
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/gasket-driver
+            - siderolabs/i915
+            - siderolabs/intel-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/qemu-guest-agent
+            - siderolabs/util-linux-tools
+
+  - hostname: "athena-agent1"
+    ipAddress: "10.0.2.111"
+    installDisk: "/dev/sda"
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:fe:55:4e"
+        dhcp: false
+        addresses:
+          - "10.0.2.111/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "10.0.2.1"
+        mtu: 1500
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/gasket-driver
+            - siderolabs/i915
+            - siderolabs/intel-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/qemu-guest-agent
+            - siderolabs/util-linux-tools
+
+  - hostname: "athena-agent2"
+    ipAddress: "10.0.2.112"
+    installDisk: "/dev/sda"
+    controlPlane: false
+    overridePatches: false
+    overrideExtraManifests: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:92:80:a8"
+        dhcp: false
+        addresses:
+          - "10.0.2.112/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "10.0.2.1"
+        mtu: 1500
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/gasket-driver
+            - siderolabs/i915
+            - siderolabs/intel-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/qemu-guest-agent
+            - siderolabs/util-linux-tools
