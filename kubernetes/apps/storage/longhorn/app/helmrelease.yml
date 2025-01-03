@@ -41,13 +41,14 @@ spec:
       tlsSecret: ${SECRET_PRIVATE_DOMAIN//./-}-tls
     defaultSettings:
       backupTarget: nfs://${SECRET_NFS_ADDR}:/kubernetes/LonghornBackups
-      defaultReplicaCount: 2
+      defaultReplicaCount: 1
       autoCleanupSystemGeneratedSnapshot: true
+      createDefaultDiskLabeledNodes: true
       # storageOverProvisioningPercentage: 100
       # storageMinimalAvailablePercentage: 10
       # restoreVolumeRecurringJobs: true
       # autoCleanupRecurringJobBackupSnapshot: true
-      # # concurrentAutomaticEngineUpgradePerNodeLimit: 1
+      # concurrentAutomaticEngineUpgradePerNodeLimit: 1
       # orphanAutoDeletion: true
       # snapshotDataIntegrity: enable
       # snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: false
