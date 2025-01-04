@@ -126,7 +126,7 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
       # -- Ingress hosts configuration
       hosts:
-        - host:  ${SECRET_PRIVATE_DOMAIN}
+        - host:  homarr.${SECRET_PRIVATE_DOMAIN}
           paths:
             - path: /
       # -- Ingress TLS configuration
