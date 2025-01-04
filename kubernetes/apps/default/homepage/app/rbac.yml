@@ -25,7 +25,7 @@ rules:
       - get
       - list
   - apiGroups:
-      - traefik.containo.us
+      - traefik.io
     resources:
       - ingressroutes
     verbs:
@@ -60,4 +60,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: *app
-    namespace: services # keep
+    namespace: default # keep
