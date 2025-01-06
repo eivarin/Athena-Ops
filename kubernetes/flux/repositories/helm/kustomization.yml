@@ -12,6 +12,7 @@ resources:
   - ./intel.yml
   - ./jetstack.yml
   - ./k8s-gateway.yml
+  - ./kubernetes-dashboard.yml
   - ./longhorn-charts.yml
   - ./metrics-server.yml
   - ./node-feature-discovery.yml
