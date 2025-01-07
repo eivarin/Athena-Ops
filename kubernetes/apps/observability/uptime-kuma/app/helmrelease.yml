@@ -64,7 +64,7 @@ spec:
                   identifier: uptime-kuma
                   port: http
         tls:
-          - secretName: kuma-${SECRET_PRIVATE_DOMAIN//./-}-tls
+          - secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
             hosts:
               - *uptime-kuma-path
 
