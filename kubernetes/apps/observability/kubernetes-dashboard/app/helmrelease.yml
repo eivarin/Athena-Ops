@@ -22,6 +22,20 @@ spec:
       mode: 'dashboard'
       image:
         pullPolicy: IfNotPresent
+      settings: # https://github.com/kubernetes/dashboard/blob/master/charts/kubernetes-dashboard/values.yaml#L74
+        global:
+          clusterName: Athena-Ops
+          defaultNamespace: _all
+          disableAccessDeniedNotifications: false
+        pinnedResources: 
+        - kind: customresourcedefinition
+          name: helmreleases.helm.toolkit.fluxcd.io
+          displayName: HelmReleases
+          namespaced: true
+        - kind: customresourcedefinition
+          name: kustomizations.kustomize.toolkit.fluxcd.io
+          displayName: Kustomizations
+          namespaced: true
       ingress:
         enabled: true
         annotations:
