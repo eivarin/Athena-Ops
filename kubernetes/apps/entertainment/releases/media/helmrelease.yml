@@ -521,7 +521,7 @@ spec:
         controller: tdarr-server
         type: LoadBalancer
         loadBalancerIP: ${SECRET_TDARR_IP}
-        externalTrafficPolicy: Local
+        externalTrafficPolicy: Cluster
         ports:
           tdarr-server-port:
             enabled: true
