@@ -32,9 +32,8 @@ spec:
   patroni:
     dynamicConfiguration:
       postgresql:
-        parameters:
-          pg_hba:
-            - "hostnossl all all all md5"
+        pg_hba:
+          - "hostnossl all all all md5"
 
   instances:
     - name: postgres
