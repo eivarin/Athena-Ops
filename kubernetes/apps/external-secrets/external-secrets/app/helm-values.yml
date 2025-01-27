@@ -1,0 +1,5 @@
+---
+installCRDs: true
+serviceMonitor:
+  enabled: true
+  interval: 1m
