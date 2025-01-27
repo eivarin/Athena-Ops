@@ -12,6 +12,7 @@ resources:
   - ./external-dns.yml
   - ./external-secrets.yml
   - ./homarr.yml
+  - ./infisical.yml
   - ./intel.yml
   - ./jetstack.yml
   - ./k8s-gateway.yml
