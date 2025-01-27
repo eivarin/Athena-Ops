@@ -7,6 +7,8 @@ resources:
   - ./bitnami.yml
   - ./cilium.yml
   - ./coredns.yml
+  - ./crunchy-userinit.yml
+  - ./crunchydata.yml
   - ./external-dns.yml
   - ./external-secrets.yml
   - ./homarr.yml
