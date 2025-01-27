@@ -16,7 +16,7 @@ spec:
           service:
             name: ptero-node1
             port:
-              number: ${SECRET_PTERO_NODE1_PORT}
+              number: 8080
   tls:
     - hosts:
         - *host

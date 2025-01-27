@@ -16,7 +16,7 @@ spec:
           service:
             name: vw
             port:
-              number: ${SECRET_VW_PORT}
+              number: 8000
   tls:
     - hosts:
         - *host
@@ -43,7 +43,7 @@ spec:
           service:
             name: vw
             port:
-              number: ${SECRET_VW_PORT}
+              number: 8000
   tls:
     - hosts:
         - *host

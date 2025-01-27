@@ -16,7 +16,7 @@ spec:
           service:
             name: nc
             port:
-              number: ${SECRET_NC_PORT}
+              number: 11000
   tls:
     - hosts:
         - *host
@@ -42,7 +42,7 @@ spec:
           service:
             name: nc
             port:
-              number: ${SECRET_NC_PORT}
+              number: 11000
   tls:
     - hosts:
         - *host

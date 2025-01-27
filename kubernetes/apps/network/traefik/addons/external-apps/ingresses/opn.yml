@@ -16,7 +16,7 @@ spec:
           service:
             name: opn
             port:
-              number: ${SECRET_OPN_PORT}
+              number: 80
   tls:
     - hosts:
         - *host

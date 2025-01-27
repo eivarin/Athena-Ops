@@ -16,7 +16,7 @@ spec:
           service:
             name: pmox
             port:
-              number: ${SECRET_PMX_PORT}
+              number: 8006
   tls:
     - hosts:
         - *host

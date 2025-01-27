@@ -16,7 +16,7 @@ spec:
           service:
             name: omv
             port:
-              number: ${SECRET_OMV_PORT}
+              number: 80
   tls:
     - hosts:
         - *host

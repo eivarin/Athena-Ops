@@ -16,7 +16,7 @@ spec:
           service:
             name: nr
             port:
-              number: ${SECRET_NR_PORT}
+              number: 1880
   tls:
     - hosts:
         - *host

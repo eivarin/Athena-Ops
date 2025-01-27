@@ -16,7 +16,7 @@ spec:
           service:
             name: adguard
             port:
-              number: ${SECRET_ADGUARD_PORT}
+              number: 80
   tls:
     - hosts:
         - *host

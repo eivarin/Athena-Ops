@@ -16,7 +16,7 @@ spec:
           service:
             name: hass
             port:
-              number: ${SECRET_HASS_PORT}
+              number: 8123
   tls:
     - hosts:
         - *host
@@ -42,7 +42,7 @@ spec:
           service:
             name: hass
             port:
-              number: ${SECRET_HASS_PORT}
+              number: 8123
   tls:
     - hosts:
         - *host
