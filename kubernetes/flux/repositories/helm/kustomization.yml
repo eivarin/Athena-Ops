@@ -15,6 +15,7 @@ resources:
   - ./kubernetes-dashboard.yml
   - ./longhorn-charts.yml
   - ./metrics-server.yml
+  - ./openebs.yml
   - ./node-feature-discovery.yml
   - ./postfinance.yml
   - ./prometheus-community.yml
