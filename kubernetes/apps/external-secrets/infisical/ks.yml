@@ -18,4 +18,20 @@ spec:
       name: sops-age
   dependsOn:
     - name: crunchy-postgres-operator-cluster
-
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infisical-clustersecretstore
+  namespace: flux-system
+spec:
+  targetNamespace: external-secrets
+  interval: 10m0s
+  retryInterval: 1m
+  path: ./kubernetes/apps/external-secrets/infisical/clustersecretstore
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  dependsOn:
+    - name: infisical
