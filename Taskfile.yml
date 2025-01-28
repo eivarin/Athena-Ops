@@ -6,49 +6,21 @@ set: [pipefail]
 shopt: [globstar]
 
 vars:
-  BOOTSTRAP_DIR: '{{.ROOT_DIR}}/bootstrap'
   KUBERNETES_DIR: '{{.ROOT_DIR}}/kubernetes'
-  SCRIPTS_DIR: '{{.ROOT_DIR}}/scripts'
-  BOOTSTRAP_CONFIG_FILE: '{{.ROOT_DIR}}/config.yml'
-  MAKEJINJA_CONFIG_FILE: '{{.ROOT_DIR}}/makejinja.toml'
-  SOPS_CONFIG_FILE: '{{.ROOT_DIR}}/.sops.yml'
+  PRIVATE_DIR: '{{.ROOT_DIR}}/.private'
+  TALHELPER_DIR: '{{.ROOT_DIR}}/kubernetes/bootstrap/talos'
+  TALOSCONFIG: '{{.ROOT_DIR}}/kubernetes/bootstrap/talos/clusterconfig/talosconfig'
 
 env:
   KUBECONFIG: '{{.ROOT_DIR}}/kubeconfig'
-  PYTHONDONTWRITEBYTECODE: '1'
   SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
-  VIRTUAL_ENV: '{{.ROOT_DIR}}/.venv'
+  TALOSCONFIG: '{{.TALOSCONFIG}}'
 
 includes:
   bootstrap: .taskfiles/bootstrap
   kubernetes: .taskfiles/kubernetes
   talos: .taskfiles/talos
-  workstation: .taskfiles/workstation
-  user:
-    taskfile: .taskfiles/User
-    optional: true
 
 tasks:
 
   default: task --list
-
-  init:
-    desc: Initialize configuration files
-    cmd: cp {{.BOOTSTRAP_CONFIG_FILE | replace ".yml" ".sample.yml"}} {{.BOOTSTRAP_CONFIG_FILE}}
-    status:
-      - test -f {{.BOOTSTRAP_CONFIG_FILE}}
-
-  configure:
-    desc: Render and validate configuration files
-    prompt: Any conflicting files in the kubernetes directory will be overwritten... continue?
-    cmds:
-      - task: bootstrap:template
-      - task: bootstrap:secrets
-      - task: kubernetes:kubeconform
-      - >
-        {{if eq .HOME_SOPS_AGE_KEY_FILE_EXISTS "true"}}
-        echo "WARNING: SOPS Age key found in home directory, this may cause conflicts."
-        {{end}}
-    vars:
-      HOME_SOPS_AGE_KEY_FILE_EXISTS:
-        sh: test -f ~/.config/sops/age/keys.txt && echo true || echo false
