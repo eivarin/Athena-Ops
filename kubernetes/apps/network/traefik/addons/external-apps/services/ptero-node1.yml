@@ -6,5 +6,5 @@ spec:
   type: ExternalName
   ports:
     - name: https
-      port: ${SECRET_PTERO_NODE1_PORT}
+      port: 8080
   externalName: ${SECRET_PTERO_NODE1_ADDR}

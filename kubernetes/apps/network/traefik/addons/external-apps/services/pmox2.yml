@@ -6,5 +6,5 @@ spec:
   type: ExternalName
   ports:
     - name: https
-      port: ${SECRET_PMX_PORT}
+      port: 8006
   externalName: ${SECRET_PMX2_ADDR}

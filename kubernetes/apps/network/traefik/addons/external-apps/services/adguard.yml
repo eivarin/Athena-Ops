@@ -6,5 +6,5 @@ spec:
   type: ExternalName
   ports:
     - name: http
-      port: ${SECRET_ADGUARD_PORT}
+      port: 80
   externalName: ${SECRET_ADGUARD_ADDR}
