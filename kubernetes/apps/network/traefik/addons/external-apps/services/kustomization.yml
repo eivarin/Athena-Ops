@@ -5,6 +5,7 @@ resources:
   - adguard.yml
   - hass.yml
   - nc.yml
+  - omada.yml
   - omv.yml
   - opn.yml
   - pmox.yml
