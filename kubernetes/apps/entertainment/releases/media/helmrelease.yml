@@ -8,7 +8,7 @@ spec:
   interval: 30m
   chartRef:
     kind: HelmChart
-    name: bjw-s
+    name: app-template
     namespace: flux-system
   values:
     defaultPodOptions:
