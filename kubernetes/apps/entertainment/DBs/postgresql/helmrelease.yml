@@ -18,7 +18,7 @@ spec:
     image:
       registry: docker.io
       repository: bitnami/postgresql
-      tag: 16.2.0-debian-12-r8
+      tag: 16.6.0-debian-12-r2
     auth:
       username: entertainment
       password: password
