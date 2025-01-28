@@ -3,10 +3,15 @@ kind: HelmRelease
 metadata:
   name: traefik-private
 spec:
-  chartRef:
-    kind: HelmChart
-    name: traefik
-    namespace: flux-system
+  chart:
+    spec:
+      chart: traefik 
+      version: 33.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+        namespace: flux-system
+      interval: 5m
   interval: 1h # this is for drifting of the helm created resources
   values:
     nodeSelector:
