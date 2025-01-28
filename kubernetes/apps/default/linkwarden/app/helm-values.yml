@@ -1,0 +1,83 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+
+    # pod:
+    #   securityContext:
+    #     runAsUser: 1000
+    #     runAsGroup: 1000
+    #     fsGroup: 1000
+    #     runAsNonRoot: true
+    #     fsGroupChangePolicy: "OnRootMismatch"
+
+    containers:
+      app:
+        image:
+          repository: ghcr.io/linkwarden/linkwarden
+          tag: v2.9.3
+          pullPolicy: IfNotPresent
+
+        env:
+          NEXTAUTH_URL: https://linkwarden.${SECRET_PUBLIC_DOMAIN1}/api/v1/auth
+          STORAGE_FOLDER: "config" # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
+          HOME: /data/config
+        envFrom:
+          - secretRef:
+              name: linkwarden-secrets
+
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            memory: 512Mi
+
+        probes:
+          liveness: &probe
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: &port 3000
+              initialDelaySeconds: 20
+              periodSeconds: 30
+              timeoutSeconds: 20
+              failureThreshold: 5
+          readiness: *probe
+
+service:
+  linkwarden:
+    controller: app
+    ports:
+      http:
+        port: *port
+
+ingress:
+  linkwarden-public:
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      external-dns.alpha.kubernetes.io/target: ${SECRET_PUBLIC_DOMAIN1}
+    className: traefik-public
+    hosts:
+      - host: &linkwarden-public-path linkwarden.${SECRET_PUBLIC_DOMAIN1}
+        paths:
+          - path: /
+            service:
+              identifier: linkwarden
+              port: http
+    tls:
+      - secretName: linkwarden-${SECRET_PUBLIC_DOMAIN1//./-}-tls
+        hosts:
+          - *linkwarden-public-path
+
+persistence:
+  linkwarden-data:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: linkwarden-data
+    globalMounts:
+      - path: /data/config
+        readOnly: false
