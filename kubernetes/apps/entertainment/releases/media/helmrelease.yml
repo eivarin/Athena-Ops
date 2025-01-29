@@ -339,7 +339,7 @@ spec:
           app:
             image:
               repository: lscr.io/linuxserver/kavita
-              tag: 0.8.3 
+              tag: 0.8.4 
             env:
               PUID: 1000
               PGID: 1000
