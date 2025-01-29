@@ -6,4 +6,5 @@ resources:
   # - ./DBs/ks.yml
   - ./storage/ks.yml
   - ./releases/ks.yml
+  - ./jellyfin/ks.yml
   - ./jellystat/ks.yml

@@ -363,41 +363,6 @@ spec:
                 memory: 300Mi
               limits:
                 memory: 1Gi
-      jellyfin:
-        pod:
-          hostname: jellyfin
-          annotations:
-            app.kubernetes.io/name: jellyfin
-            app.kubernetes.io/instance: jellyfin
-        containers:
-          app:
-            image:
-              repository: jellyfin/jellyfin
-              tag: 10.10.5
-            env:
-              PUID: 1000
-              PGID: 1000
-              TZ: ${TIMEZONE}
-            probes:
-              liveness: &jellyfin-probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: &jellyfin-port 8096
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 5
-                  failureThreshold: 10
-              readiness: *jellyfin-probes
-            resources:
-              requests:
-                gpu.intel.com/i915: "1"
-                memory: 1Gi
-              limits:
-                gpu.intel.com/i915: "1"
-                memory: 4Gi
       tdarr-server:
         pod:
           hostname: tdarr-server
@@ -469,11 +434,6 @@ spec:
         ports:
           kavita-http:
             port: *kavita-port
-      jellyfin:
-        controller: jellyfin
-        ports:
-          jellyfin-http:
-            port: *jellyfin-port
       tdarr-server:
         controller: tdarr-server
         ports:
@@ -617,37 +577,6 @@ spec:
           - secretName: *tls-home
             hosts:
               - *kavita-path
-      jellyfin:
-        annotations: *ingress-anotations
-        className: *ingressClassName
-        hosts:
-          - host: &jellyfin-path jellyfin.${SECRET_PRIVATE_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: jellyfin
-                  port: jellyfin-http
-        tls:
-          - secretName: *tls-home
-            hosts:
-              - *jellyfin-path
-      jellyfin-public:
-        annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: ${SECRET_PUBLIC_DOMAIN1}
-        className: traefik-public
-        hosts:
-          - host: &jellyfin-public-path jellyfin.${SECRET_PUBLIC_DOMAIN1}
-            paths:
-              - path: /
-                service:
-                  identifier: jellyfin
-                  port: jellyfin-http
-        tls:
-          - secretName: jellyfin-${SECRET_PUBLIC_DOMAIN1//./-}-tls
-            hosts:
-              - *jellyfin-public-path
       tdarr:
         annotations: *ingress-anotations
         className: *ingressClassName
@@ -735,32 +664,24 @@ spec:
             app:
               - path: /config
                 readOnly: false
-      jellyfin-config:
-        existingClaim: jellyfin-config
-        globalMounts: []
-        advancedMounts:
-          jellyfin:
-            app:
-              - path: /config
-                readOnly: false
-              - path: /var/lib/jellyfin/root
-                readOnly: false
-                subPath: root
-      jellyfin-cache:
-        type: emptyDir
-        globalMounts: []
-        advancedMounts:
-          jellyfin:
-            app:
-              - path: /cache
-                readOnly: false
-      # jellystat-backup-data:
-      #   existingClaim: jellystat-backup-data
+      # jellyfin-config:
+      #   existingClaim: jellyfin-config
       #   globalMounts: []
       #   advancedMounts:
-      #     jellystat:
+      #     jellyfin:
       #       app:
-      #         - path: /app/backend/backup-data
+      #         - path: /config
+      #           readOnly: false
+      #         - path: /var/lib/jellyfin/root
+      #           readOnly: false
+      #           subPath: root
+      # jellyfin-cache:
+      #   type: emptyDir
+      #   globalMounts: []
+      #   advancedMounts:
+      #     jellyfin:
+      #       app:
+      #         - path: /cache
       #           readOnly: false
       tdarr-server:
         existingClaim: tdarr-server

@@ -1,15 +1,16 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: entertainment-postgresql
+  name: jellyfin
   namespace: flux-system
 spec:
   targetNamespace: entertainment
   interval: 10m0s
   retryInterval: 1m
-  path: ./kubernetes/apps/entertainment/DBs/postgresql
+  path: ./kubernetes/apps/entertainment/jellyfin/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-
+  dependsOn:
+    - name: longhorn
