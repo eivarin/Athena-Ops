@@ -68,6 +68,11 @@ spec:
         - linkwarden
       password:
         type: AlphaNumeric
+    - name: entertainment
+      databases:
+        - jellystat
+      password:
+        type: AlphaNumeric
   backups:
     pgbackrest:
       configuration: &backupConfig []

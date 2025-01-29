@@ -398,44 +398,6 @@ spec:
               limits:
                 gpu.intel.com/i915: "1"
                 memory: 4Gi
-      jellystat:
-        pod:
-          hostname: jellystat
-          annotations:
-            app.kubernetes.io/name: jellystat
-            app.kubernetes.io/instance: jellystat
-        containers:
-          app:
-            image:
-              repository: cyfershepard/jellystat
-              tag: latest
-            # command: ["/bin/bash", "-c", "while ! timeout 1 bash -c '</dev/tcp/media-db-postgresql/5432'; do sleep 1; done; chmod +x /app/entry.sh; /app/entry.sh"]
-            env:
-              POSTGRES_USER: media
-              POSTGRES_PASSWORD: password
-              POSTGRES_IP: postgresql
-              POSTGRES_PORT: 5432
-              JWT_SECRET: supersecret
-              TZ: ${TIMEZONE}
-            probes:
-              liveness: &jellystat-probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: &jellystat-port 3000
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *jellystat-probes
-            resources:
-              requests:
-                cpu: 15m
-                memory: 300Mi
-              limits:
-                memory: 1Gi
       tdarr-server:
         pod:
           hostname: tdarr-server
@@ -512,11 +474,6 @@ spec:
         ports:
           jellyfin-http:
             port: *jellyfin-port
-      jellystat:
-        controller: jellystat
-        ports:
-          jellystat-http:
-            port: *jellystat-port
       tdarr-server:
         controller: tdarr-server
         ports:
@@ -691,20 +648,6 @@ spec:
           - secretName: jellyfin-${SECRET_PUBLIC_DOMAIN1//./-}-tls
             hosts:
               - *jellyfin-public-path
-      jellystat:
-        annotations: *ingress-anotations
-        className: *ingressClassName
-        hosts:
-          - host: &jellystat-path jellystat.${SECRET_PRIVATE_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: jellystat
-                  port: jellystat-http
-        tls:
-          - secretName: *tls-home
-            hosts:
-              - *jellystat-path
       tdarr:
         annotations: *ingress-anotations
         className: *ingressClassName
@@ -811,14 +754,14 @@ spec:
             app:
               - path: /cache
                 readOnly: false
-      jellystat-backup-data:
-        existingClaim: jellystat-backup-data
-        globalMounts: []
-        advancedMounts:
-          jellystat:
-            app:
-              - path: /app/backend/backup-data
-                readOnly: false
+      # jellystat-backup-data:
+      #   existingClaim: jellystat-backup-data
+      #   globalMounts: []
+      #   advancedMounts:
+      #     jellystat:
+      #       app:
+      #         - path: /app/backend/backup-data
+      #           readOnly: false
       tdarr-server:
         existingClaim: tdarr-server
         globalMounts: []

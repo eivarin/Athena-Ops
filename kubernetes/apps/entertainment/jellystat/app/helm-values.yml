@@ -1,0 +1,78 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+    containers:
+      app:
+        image:
+          repository: cyfershepard/jellystat
+          tag: 1.1.2
+          pullPolicy: IfNotPresent
+        env:
+          TZ: ${TIMEZONE}
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: jellystat
+        envFrom:
+          - secretRef:
+              name: jellystat-secrets
+        resources:
+          requests:
+            cpu: 15m
+            memory: 300Mi
+          limits:
+            memory: 1Gi
+
+        probes:
+          liveness: &probe
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: &port 3000
+              initialDelaySeconds: 20
+              periodSeconds: 30
+              timeoutSeconds: 20
+              failureThreshold: 5
+          readiness: *probe
+
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: *port
+
+ingress:
+  private:
+    annotations: 
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    className: traefik-private
+    hosts:
+      - host: &private-path jellystat.${SECRET_PRIVATE_DOMAIN}
+        paths:
+          - path: /
+            service:
+              identifier: web
+              port: http
+    tls:
+      - secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
+        hosts:
+          - *private-path
+
+persistence:
+  backup-data:
+    existingClaim: jellystat-backup-data
+    globalMounts: 
+      - path: /app/backend/backup-data
+        readOnly: false
+
+  media:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim:  entertainment-storage-nfs-media
+    globalMounts:
+      - path: /shared/Media
+        readOnly: false
+
