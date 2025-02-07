@@ -59,7 +59,7 @@ ingress:
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       cert-manager.io/cluster-issuer: letsencrypt-production
-      external-dns.alpha.kubernetes.io/target: linkwarden.${SECRET_PUBLIC_DOMAIN1}
+      external-dns.alpha.kubernetes.io/target: ${SECRET_PUBLIC_DOMAIN1}
     className: traefik-public
     hosts:
       - host: &linkwarden-public-path linkwarden.${SECRET_PUBLIC_DOMAIN1}
