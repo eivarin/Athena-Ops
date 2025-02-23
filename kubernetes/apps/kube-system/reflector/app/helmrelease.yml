@@ -6,7 +6,7 @@ spec:
   chart:
     spec:
       chart: reflector
-      version: 7.1.x
+      version: 9.0.x
       interval: 24h
       sourceRef:
         kind: HelmRepository
