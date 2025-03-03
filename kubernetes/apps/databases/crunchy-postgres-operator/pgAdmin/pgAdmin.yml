@@ -16,7 +16,7 @@ spec:
     volumeName: pgadmin-data
     resources:
       requests:
-        storage: 1Gi
+        storage: 2Gi
   serviceName: "pgadmin"
   serverGroups:
   - name: Main Group
