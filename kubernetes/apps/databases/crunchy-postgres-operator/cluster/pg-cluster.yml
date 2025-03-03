@@ -12,12 +12,11 @@ spec:
       crunchy-userinit.ramblurr.github.com/enabled: "true"
       crunchy-userinit.ramblurr.github.com/superuser: "postgres"
 
-  # service:
-  #   type: LoadBalancer
-  #   metadata:
-  #     annotations:
-  #       external-dns.alpha.kubernetes.io/hostname: <example domain name for external dns>
-  #       lbipam.cilium.io/ips: <example IP address for service>
+  service:
+    type: LoadBalancer
+    metadata:
+      annotations:
+        lbipam.cilium.io/ips: 10.0.2.201
 
   # patroni: # turn on sync writes to at least 1 other replica
   #   dynamicConfiguration:
