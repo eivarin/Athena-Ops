@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: tombursch/kitchenowl
-              tag: v0.6.8
+              tag: v0.6.11
               pullPolicy: IfNotPresent
 
             env:
