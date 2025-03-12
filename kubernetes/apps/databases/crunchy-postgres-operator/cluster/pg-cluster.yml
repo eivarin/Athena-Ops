@@ -72,6 +72,11 @@ spec:
         - jellystat
       password:
         type: AlphaNumeric
+    - name: nextcloud
+      databases:
+        - nextcloud
+      password:
+        type: AlphaNumeric
   backups:
     pgbackrest:
       configuration: &backupConfig []
