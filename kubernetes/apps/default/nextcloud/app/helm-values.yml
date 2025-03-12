@@ -1,0 +1,126 @@
+image:
+  flavor: apache
+nginx:
+  enabled: false
+  # resources:
+  #   requests:
+  #     cpu: 500m
+  #     memory: 500Mi
+  #   limits:
+  #     memory: 8Gi
+replicaCount: 1
+env:
+  TZ: ${TIMEZONE}
+  # PHP_MEMORY_LIMIT: 256M
+
+# podSecurityContext:
+
+#   supplementalGroups:
+#     - 100
+
+persistence:
+  existingClaim: nextcloud
+  enabled: true
+  # accessMode: ReadWriteMany
+  # storageClass: longhorn
+  nextcloudData:
+  #   accessMode: ReadWriteMany
+    enabled: false
+    existingClaim: nextcloud
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    memory: 4Gi
+hpa:
+  enabled: false
+
+ingress:
+  enabled: false
+  # enabled: true
+  # className: "traefik-external"
+  # annotations:
+  #   cert-manager.io/cluster-issuer: "letsencrypt-production-external"
+  #   traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+  #   traefik.ingress.kubernetes.io/router.middlewares: |
+  #     networking-cloudflare-only@kubernetescrd,
+  #     networking-request-limit@kubernetescrd
+  # tls:
+  #   - hosts:
+  #       - "nextcloud.${EXTERNAL_DOMAIN}"
+  #     secretName: "nextcloud-tls"
+
+service:
+  annotations:
+    traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+    
+nextcloud:
+  host: nc.${SECRET_PUBLIC_DOMAIN1}
+
+  existingSecret:
+    enabled: true
+    secretName: nextcloud
+    usernameKey: admin_user
+    passwordKey: admin_password
+
+  configs:
+    proxy.config.php: |-
+      <?php
+      $CONFIG = array (
+        'trusted_proxies' => array(
+          '127.0.0.1',         // Loopback address (localhost)
+          '10.0.0.0/8',        // RFC1918 - Class A private network range
+          '172.16.0.0/12',     // RFC1918 - Class B private network range
+          '192.168.0.0/16',    // RFC1918 - Class C private network range
+        ),
+        'trusted_domains' =>
+        array(
+            0 => 'nc.${SECRET_PUBLIC_DOMAIN1}',
+            2 => 'localhost',
+        ),
+        'forwarded_for_headers' => array('HTTP_X_FORWARDED_FOR'),
+      );
+internalDatabase:
+  enabled: false
+
+externalDatabase:
+  enabled: true
+  type: postgresql
+  host: postgres-primary.databases.svc:5432 
+  database: nextcloud
+  user: nextcloud
+  # password: set by valuesFrom
+
+cronjob:
+  enabled: true
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  curlInsecure:
+  resources:
+    requests:
+      cpu: 5m
+      memory: 10Mi
+    limits:
+      memory: 50Mi
+
+postgresql:
+  enabled: false
+
+redis:
+  enabled: true
+  auth:
+    enabled: false
+
+startupProbe:
+  enabled: false
+  # initialDelaySeconds: 60
+  # periodSeconds: 30
+  # timeoutSeconds: 10
+  # failureThreshold: 10
+  # successThreshold: 1
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
+
