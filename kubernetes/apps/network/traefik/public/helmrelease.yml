@@ -54,18 +54,19 @@ spec:
         expose:
           default: true
       web:
+        port: 80
         redirections:
           entryPoint:
             to: websecure
             scheme: https
             permanent: true
       websecure:
+        port: 443
         http3:
           enabled: true
         advertisedPort: 4443
         tls:
           enabled: true
-
     gateway:
       enabled: false
 
