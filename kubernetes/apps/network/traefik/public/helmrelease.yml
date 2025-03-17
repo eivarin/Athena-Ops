@@ -23,6 +23,7 @@ spec:
       name: "traefik-public"
 
     globalArguments:
+      - "--api.insecure=true"
       - "--global.sendanonymoususage=false"
       - "--global.checknewversion=false"
 
@@ -38,7 +39,20 @@ spec:
       additionalContainers: []
       initContainers: []
 
+    ingressRoute:
+      dashboard:
+        enabled: false
+
+    experimental:
+      plugins:
+        fail2ban:
+          moduleName: "github.com/tomMoulard/fail2ban"
+          version: "v0.8.3"
+
     ports:
+      traefik:
+        expose:
+          default: true
       web:
         redirections:
           entryPoint:
@@ -51,16 +65,9 @@ spec:
         advertisedPort: 4443
         tls:
           enabled: true
-          
-    ingressRoute:
-      dashboard:
-        enabled: false
 
-    experimental:
-      plugins:
-        fail2ban:
-          moduleName: "github.com/tomMoulard/fail2ban"
-          version: "v0.8.3"
+    gateway:
+      enabled: false
 
     providers:
       kubernetesCRD:
@@ -69,9 +76,19 @@ spec:
         allowExternalNameServices: true
       kubernetesIngress:
         enabled: true
+        ingressClass: traefik-public
         allowExternalNameServices: true
         publishedService:
           enabled: true
+      kubernetesGateway:
+        enabled: true
+        labelselector: "traefik=public"
+    
+    gatewayClass:
+      enabled: true
+      name: traefik-public
+      labels:
+        traefik: public
 
     rbac:
       enabled: true
