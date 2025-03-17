@@ -3,8 +3,25 @@ kind: Service
 metadata:
   name: omv
 spec:
-  type: ExternalName
   ports:
     - name: http
       port: 80
-  externalName: ${SECRET_OMV_ADDR}
+      targetPort: 80
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: omv
+  labels:
+    kubernetes.io/service-name: omv
+    endpointslice.kubernetes.io/managed-by: cluster-admins
+addressType: IPv4
+endpoints:
+  - addresses:
+      - ${SECRET_OMV_ADDR}
+    conditions:
+      ready: true
+ports:
+  - name: http
+    port: 80
+---

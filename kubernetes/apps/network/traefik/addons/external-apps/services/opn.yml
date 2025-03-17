@@ -3,8 +3,25 @@ kind: Service
 metadata:
   name: opn
 spec:
-  type: ExternalName
   ports:
     - name: http
       port: 80
-  externalName: ${SECRET_OPN_ADDR}
+      targetPort: 80
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: opn
+  labels:
+    kubernetes.io/service-name: opn
+    endpointslice.kubernetes.io/managed-by: cluster-admins
+addressType: IPv4
+endpoints:
+  - addresses:
+      - ${SECRET_OPN_ADDR}
+    conditions:
+      ready: true
+ports:
+  - name: http
+    port: 80
+---

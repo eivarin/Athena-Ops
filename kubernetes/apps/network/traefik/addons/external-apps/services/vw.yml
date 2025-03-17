@@ -3,8 +3,25 @@ kind: Service
 metadata:
   name: vw
 spec:
-  type: ExternalName
   ports:
     - name: http
-      port: 8000
-  externalName: ${SECRET_VW_ADDR}
+      port: 80
+      targetPort: 8000
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: vw
+  labels:
+    kubernetes.io/service-name: vw
+    endpointslice.kubernetes.io/managed-by: cluster-admins
+addressType: IPv4
+endpoints:
+  - addresses:
+      - ${SECRET_VW_ADDR}
+    conditions:
+      ready: true
+ports:
+  - name: http
+    port: 8000
+---

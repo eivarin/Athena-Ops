@@ -3,8 +3,25 @@ kind: Service
 metadata:
   name: adguard
 spec:
-  type: ExternalName
   ports:
     - name: http
       port: 80
-  externalName: ${SECRET_ADGUARD_ADDR}
+      targetPort: 80
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: adguard
+  labels:
+    kubernetes.io/service-name: adguard
+    endpointslice.kubernetes.io/managed-by: cluster-admins
+addressType: IPv4
+endpoints:
+  - addresses:
+      - ${SECRET_ADGUARD_ADDR}
+    conditions:
+      ready: true
+ports:
+  - name: http
+    port: 80
+---

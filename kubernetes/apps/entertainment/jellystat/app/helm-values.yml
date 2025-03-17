@@ -44,22 +44,38 @@ service:
       http:
         port: *port
 
-ingress:
-  private:
-    annotations: 
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    className: traefik-private
-    hosts:
-      - host: &private-path jellystat.${SECRET_PRIVATE_DOMAIN}
-        paths:
-          - path: /
-            service:
-              identifier: web
-              port: http
-    tls:
-      - secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
-        hosts:
-          - *private-path
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - "jellystat.${SECRET_PRIVATE_DOMAIN}"
+    rules:
+      - backendRefs:
+        - name: jellystat
+          port: *port
+
+
+# ingress:
+#   private:
+#     annotations: 
+#       traefik.ingress.kubernetes.io/router.entrypoints: websecure
+#     className: traefik-private
+#     hosts:
+#       - host: &private-path jellystat.${SECRET_PRIVATE_DOMAIN}
+#         paths:
+#           - path: /
+#             service:
+#               identifier: web
+#               port: http
+#     tls:
+#       - secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
+#         hosts:
+#           - *private-path
 
 persistence:
   backup-data:

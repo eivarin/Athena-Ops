@@ -47,39 +47,26 @@ service:
       http:
         port: *port
 
-ingress:
-  private:
-    annotations: 
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    className: traefik-private
-    hosts:
-      - host: &private-path jellyfin.${SECRET_PRIVATE_DOMAIN}
-        paths:
-          - path: /
-            service:
-              identifier: web
-              port: http
-    tls:
-      - secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
-        hosts:
-          - *private-path
-  public:
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      cert-manager.io/cluster-issuer: letsencrypt-production
-      external-dns.alpha.kubernetes.io/target: ${SECRET_PUBLIC_DOMAIN1}
-    className: traefik-public
-    hosts:
-      - host: &jellyfin-public-path jellyfin.${SECRET_PUBLIC_DOMAIN1}
-        paths:
-          - path: /
-            service:
-              identifier: web
-              port: http
-    tls:
-      - secretName: jellyfin-${SECRET_PUBLIC_DOMAIN1//./-}-tls
-        hosts:
-          - *jellyfin-public-path
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+      - name: traefik-public-default
+        namespace: network
+        sectionName: https-jellyfin
+    hostnames:
+      - "jellyfin.${SECRET_PRIVATE_DOMAIN}"
+      - "jellyfin.${SECRET_PUBLIC_DOMAIN1}"
+    rules:
+      - backendRefs:
+        - name: jellyfin
+          port: *port
+
+
 
 persistence:
   config:

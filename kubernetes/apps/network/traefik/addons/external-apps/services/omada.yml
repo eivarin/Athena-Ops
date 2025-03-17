@@ -3,8 +3,25 @@ kind: Service
 metadata:
   name: omada
 spec:
-  type: ExternalName
   ports:
-    - name: https
-      port: 8043
-  externalName: ${SECRET_OMADA_ADDR}
+    - name: http
+      port: 80
+      targetPort: 8043
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: omada
+  labels:
+    kubernetes.io/service-name: omada
+    endpointslice.kubernetes.io/managed-by: cluster-admins
+addressType: IPv4
+endpoints:
+  - addresses:
+      - ${SECRET_OMADA_ADDR}
+    conditions:
+      ready: true
+ports:
+  - name: http
+    port: 8043
+---

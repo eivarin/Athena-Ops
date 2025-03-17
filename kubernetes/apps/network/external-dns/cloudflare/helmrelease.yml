@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: external-dns
-      version: 1.15.1
+      version: 1.15.2
       sourceRef:
         kind: HelmRepository
         name: external-dns
@@ -25,6 +25,10 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    image: 
+      repository: registry.k8s.io/external-dns/external-dns
+      tag: v0.16.1
+
     fullnameOverride: *app
     provider: cloudflare
     env:
@@ -40,9 +44,10 @@ spec:
       - --crd-source-kind=DNSEndpoint
       - --ignore-ingress-tls-spec
       - --ingress-class=traefik-public
+      - --gateway-name=traefik-public-default
     triggerLoopOnEvent: true
     policy: sync
-    sources: ["crd", "ingress"]
+    sources: ["crd", "ingress", "gateway-httproute", "gateway-grpcroute"]
     txtPrefix: k8s.
     txtOwnerId: default
     domainFilters: []

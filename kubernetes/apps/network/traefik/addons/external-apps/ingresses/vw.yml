@@ -1,50 +1,18 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
 metadata:
   name: vw
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
-  ingressClassName: traefik-private
+  parentRefs:
+    - name: traefik-private-default
+      port: 443
+    - name: traefik-public-default
+      port: 443
+  hostnames:
+    - "vw.${SECRET_PRIVATE_DOMAIN}"
+    - "vw.${SECRET_PUBLIC_DOMAIN1}"
   rules:
-  - host: &host vw.${SECRET_PRIVATE_DOMAIN}
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: vw
-            port:
-              number: 8000
-  tls:
-    - hosts:
-        - *host
-      secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
-      
+    - backendRefs:
+        - name: vw
+          port: 80
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: vw-public
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    external-dns.alpha.kubernetes.io/target: ${SECRET_PUBLIC_DOMAIN1}
-spec:
-  ingressClassName: traefik-public
-  rules:
-  - host: &host vw.${SECRET_PUBLIC_DOMAIN1}
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: vw
-            port:
-              number: 8000
-  tls:
-    - hosts:
-        - *host
-      secretName: vw-${SECRET_PUBLIC_DOMAIN1//./-}-tls

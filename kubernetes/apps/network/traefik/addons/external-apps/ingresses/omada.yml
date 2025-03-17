@@ -1,24 +1,14 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
 metadata:
   name: omada
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
-  ingressClassName: traefik-private
+  parentRefs:
+    - name: traefik-private-default
+      port: 443
+  hostnames:
+    - "omada.${SECRET_PRIVATE_DOMAIN}"
   rules:
-  - host: &host omada.${SECRET_PRIVATE_DOMAIN}
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: omada
-            port:
-              number: 8043
-  tls:
-    - hosts:
-        - *host
-      secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
+    - backendRefs:
+        - name: omada
+          port: 80

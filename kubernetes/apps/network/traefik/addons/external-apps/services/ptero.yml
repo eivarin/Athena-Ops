@@ -3,8 +3,25 @@ kind: Service
 metadata:
   name: ptero
 spec:
-  type: ExternalName
   ports:
     - name: https
-      port: 443
-  externalName: ${SECRET_PTERO_ADDR}
+      port: 80
+      targetPort: 443
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: ptero
+  labels:
+    kubernetes.io/service-name: ptero
+    endpointslice.kubernetes.io/managed-by: cluster-admins
+addressType: IPv4
+endpoints:
+  - addresses:
+      - ${SECRET_PTERO_ADDR}
+    conditions:
+      ready: true
+ports:
+  - name: https
+    port: 443
+---
