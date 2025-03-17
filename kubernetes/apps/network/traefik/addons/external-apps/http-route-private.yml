@@ -6,13 +6,10 @@ metadata:
 spec:
   parentRefs:
     - name: traefik-private-default
+      port: 443
   hostnames:
     - "*.${SECRET_PRIVATE_DOMAIN}"
   rules:
-    - matches:
-        - headers:
-          - name: 'Host'
-            value: hass.${SECRET_PRIVATE_DOMAIN}
-      backendRefs:
+    - backendRefs:
         - name: home-assistant
           port: 80

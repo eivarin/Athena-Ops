@@ -1,49 +1,19 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+# https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
 metadata:
   name: hass
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
-  ingressClassName: traefik-private
+  parentRefs:
+    - name: traefik-private-default
+      port: 443
+    - name: traefik-public-default
+      port: 443
+  hostnames:
+    - "hass.${SECRET_PRIVATE_DOMAIN}"
+    - "hass.${SECRET_PUBLIC_DOMAIN1}"
   rules:
-  - host: &host hass.${SECRET_PRIVATE_DOMAIN}
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: hass
-            port:
-              number: 8123
-  tls:
-    - hosts:
-        - *host
-      secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
+    - backendRefs:
+        - name: home-assistant
+          port: 80
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: hass-public
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    external-dns.alpha.kubernetes.io/target: ${SECRET_PUBLIC_DOMAIN1}
-spec:
-  ingressClassName: traefik-public
-  rules:
-  - host: &host hass.${SECRET_PUBLIC_DOMAIN1}
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: hass
-            port:
-              number: 8123
-  tls:
-    - hosts:
-        - *host
-      secretName: hass-${SECRET_PUBLIC_DOMAIN1//./-}-tls
