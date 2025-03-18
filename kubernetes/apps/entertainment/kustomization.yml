@@ -8,3 +8,4 @@ resources:
   - ./releases/ks.yml
   - ./jellyfin/ks.yml
   - ./jellystat/ks.yml
+  - ./calibre/ks.yml
