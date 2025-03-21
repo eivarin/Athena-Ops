@@ -1,0 +1,88 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+    pod:
+      hostname: &app tdarr-server
+      annotations:
+        app.kubernetes.io/name: *app
+        app.kubernetes.io/instance: *app
+    containers:
+      app:
+        image:
+          repository: ghcr.io/haveagitgat/tdarr
+          tag: 2.29.01
+          pullPolicy: IfNotPresent
+        env:
+          internalNode: false
+          TZ: ${TIMEZONE}
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            memory: 1Gi
+        probes:
+          liveness: &probe
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /api/v2/status
+                port: &port 8265
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probe
+
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: *port
+  lb:
+    controller: app
+    type: LoadBalancer
+    loadBalancerIP: ${SECRET_TDARR_IP}
+    externalTrafficPolicy: Local
+    ports:
+      tdarr-server-port:
+        enabled: true
+        protocol: TCP
+        port: 8266
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - "tdarr.${SECRET_PRIVATE_DOMAIN}"
+    rules:
+      - backendRefs:
+        - name: tdarr-server-web
+          port: *port
+
+
+persistence:
+  tdarr-server:
+    existingClaim: tdarr-server
+    globalMounts: 
+      - path: /app/configs
+        subPath: config
+      - path: /app/server
+        subPath: server
+  media:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: entertainment-storage-nfs-media
+    globalMounts:
+      - path: /shared/Media
+        readOnly: false
+

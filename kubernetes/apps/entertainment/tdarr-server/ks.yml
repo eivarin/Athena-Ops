@@ -1,14 +1,16 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: entertainment-release-media
+  name: tdarr-server
   namespace: flux-system
 spec:
   targetNamespace: entertainment
   interval: 10m0s
   retryInterval: 1m
-  path: ./kubernetes/apps/entertainment/releases/media
+  path: ./kubernetes/apps/entertainment/tdarr-server/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
+  dependsOn:
+    - name: longhorn

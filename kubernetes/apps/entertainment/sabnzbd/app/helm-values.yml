@@ -1,0 +1,78 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+    pod:
+      hostname: &app sabnzbd
+      annotations:
+        app.kubernetes.io/name: *app
+        app.kubernetes.io/instance: *app
+    containers:
+      app:
+        image:
+          repository: lscr.io/linuxserver/sabnzbd
+          tag: 4.4.1
+          pullPolicy: IfNotPresent
+        env:
+          PUID: 1000
+          PGID: 1000
+          TZ: ${TIMEZONE}
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            memory: 4Gi
+
+        probes:
+          liveness: &probe
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: &port 8080
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probe
+
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: *port
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - "sabnzbd.${SECRET_PRIVATE_DOMAIN}"
+    rules:
+      - backendRefs:
+        - name: *app
+          port: *port
+
+
+persistence:
+  sabnzbd-config:
+    existingClaim: sabnzbd-config
+    globalMounts: 
+      - path: /config
+        readOnly: false
+  media:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: entertainment-storage-nfs-media
+    globalMounts:
+      - path: /shared/Media
+        readOnly: false
+

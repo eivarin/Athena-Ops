@@ -1,0 +1,78 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+    pod:
+      hostname: &app jellyseerr
+      annotations:
+        app.kubernetes.io/name: *app
+        app.kubernetes.io/instance: *app
+    containers:
+      app:
+        image:
+          repository: fallenbagel/jellyseerr
+          tag: 2.5.1
+          pullPolicy: IfNotPresent
+        env:
+          PUID: 1000
+          PGID: 1000
+          TZ: ${TIMEZONE}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 500Mi
+          limits:
+            memory: 1Gi
+
+        probes:
+          liveness: &probe
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /api/v1/status
+                port: &port 5055
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probe
+
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: *port
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - "jellyseerr.${SECRET_PRIVATE_DOMAIN}"
+    rules:
+      - backendRefs:
+        - name: jellyseerr
+          port: *port
+
+
+persistence:
+  jellyseerr-config:
+    existingClaim: jellyseerr-config
+    globalMounts: 
+      - path: /app/config
+        readOnly: false
+  media:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim:  entertainment-storage-nfs-media
+    globalMounts:
+      - path: /shared/Media
+        readOnly: false
+
