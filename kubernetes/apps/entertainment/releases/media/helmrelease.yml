@@ -271,7 +271,7 @@ spec:
           app:
             image:
               repository: fallenbagel/jellyseerr
-              tag: 2.3.0
+              tag: 2.5.1
             env:
               PUID: 1000
               PGID: 1000
