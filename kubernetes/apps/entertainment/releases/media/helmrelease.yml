@@ -7,18 +7,9 @@ metadata:
 spec:
   interval: 30m
   chartRef:
-    kind: HelmChart
+    kind: OCIRepository
     name: app-template
     namespace: flux-system
-  # chart:
-  #   spec:
-  #     chart: app-template
-  #     version: 3.6.1
-  #     sourceRef:
-  #       kind: HelmRepository
-  #       name: bjw-s
-  #       namespace: flux-system
-  #     interval: 5m
   values:
     defaultPodOptions:
       nodeSelector:
@@ -275,7 +266,7 @@ spec:
           app:
             image:
               repository: fallenbagel/jellyseerr
-              tag: 2.5.1
+              tag: 2.3.0
             env:
               PUID: 1000
               PGID: 1000
