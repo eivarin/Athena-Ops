@@ -77,6 +77,11 @@ spec:
         - nextcloud
       password:
         type: AlphaNumeric
+    - name: trina
+      databases:
+        - WordsBot
+      password:
+        type: AlphaNumeric
   backups:
     pgbackrest:
       configuration: &backupConfig []
