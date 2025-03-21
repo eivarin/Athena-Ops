@@ -93,7 +93,7 @@ spec:
           app:
             image:
               repository: lscr.io/linuxserver/readarr
-              tag: 0.4.11-nightly
+              tag: 0.4.13-nightly
             env:
               PUID: 1000
               PGID: 1000
