@@ -1,0 +1,50 @@
+controllers:
+  app:
+    enabled: true
+    type: cronjob
+    cronjob:
+      schedule: "@daily"
+      successfulJobsHistory: 1
+      failedJobsHistory: 1
+    pod:
+      hostname: &app recyclarr
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+      annotations:
+        app.kubernetes.io/name: *app
+        app.kubernetes.io/instance: *app
+    containers:
+      app:
+        image:
+          repository: ghcr.io/recyclarr/recyclarr
+          tag: 7.4.1
+          pullPolicy: IfNotPresent
+        args: ["sync"]
+        env:
+          TZ: ${TIMEZONE}
+        envFrom:
+          - secretRef:
+              name: recyclarr
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: { drop: ["ALL"] }
+        resources:
+          requests:
+            cpu: 10m
+          limits:
+            memory: 128Mi
+persistence:
+  config:
+    type: emptyDir
+  config-file:
+    type: configMap
+    name: recyclarr-configmap
+    globalMounts:
+      - path: /config/recyclarr.yml
+        subPath: recyclarr.yml
+        readOnly: true

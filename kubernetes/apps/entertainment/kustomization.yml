@@ -16,6 +16,7 @@ resources:
   - ./prowlarr/ks.yml
   - ./radarr/ks.yml
   - ./readarr/ks.yml
+  - ./recyclarr/ks.yml
   - ./sabnzbd/ks.yml
   - ./sonarr/ks.yml
   - ./tdarr-server/ks.yml
