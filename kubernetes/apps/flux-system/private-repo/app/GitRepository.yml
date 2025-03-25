@@ -1,0 +1,12 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: home-kubernetes-private
+  namespace: flux-system
+spec:
+  interval: 30m
+  url: ${SECRET_REPO_URL}
+  ref:
+    branch: "main"
+  secretRef: 
+    name: private-repo-auth

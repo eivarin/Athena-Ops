@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app private-repo
+  namespace: flux-system
+spec:
+  targetNamespace: flux-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/flux-system/private-repo/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: true
+  interval: 30m
+  timeout: 5m
+  dependsOn:
+  - name: infisical
