@@ -31,8 +31,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: traefik-certificates
   path: ./kubernetes/apps/network/traefik/public
   prune: true
   sourceRef:
@@ -53,8 +51,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: traefik-certificates
   path: ./kubernetes/apps/network/traefik/private
   prune: true
   sourceRef:
