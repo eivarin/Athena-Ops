@@ -26,6 +26,8 @@ spec:
               metadata:
                 annotations:
                   external-dns.alpha.kubernetes.io/target: ${SECRET_PUBLIC_DOMAIN1}
+                  traefik.ingress.kubernetes.io/router.tls: "true"
+                  traefik.ingress.kubernetes.io/frontend-entry-points: "https"
         selector:
           dnsZones:
             - "vw.${SECRET_PUBLIC_DOMAIN1}"
