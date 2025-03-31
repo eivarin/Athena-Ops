@@ -1,0 +1,111 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+    pod:
+      hostname: &app syncthing
+      annotations:
+        app.kubernetes.io/name: *app
+        app.kubernetes.io/instance: *app
+
+    containers:
+      app:
+        image:
+          repository: syncthing/syncthing
+          tag: 1.29.3
+          pullPolicy: IfNotPresent
+        env:
+          PUID: "1000"
+          PGID: "1000"
+          TZ: ${TIMEZONE}
+        resources:
+          requests:
+            cpu: 50m
+            memory: 100Mi
+          limits:
+            memory: 500Mi
+
+        probes:
+          liveness: &probe
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: &port 8384
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probe
+
+defaultPodOptions:
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+    # runAsNonRoot: true
+    fsGroupChangePolicy: OnRootMismatch
+    supplementalGroups:
+      - 65539
+    seccompProfile:
+      type: RuntimeDefault
+
+service:
+  app:
+    nameOverride: *app
+    controller: *app
+    ports:
+      http:
+        port: *port
+
+  listen:
+    controller: *app
+    type: LoadBalancer
+    annotations:
+      lbipam.cilium.io/ips: 10.0.2.202
+    ports:
+      listen:
+        enabled: true
+        port: 22000
+        protocol: TCP
+        targetPort: 22000
+      discovery:
+        enabled: true
+        port: 21027
+        protocol: UDP
+        targetPort: 21027
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - "syncthing.${SECRET_PRIVATE_DOMAIN}"
+    rules:
+      - backendRefs:
+        - name: *app
+          port: *port
+
+
+persistence:
+  syncthing-config:
+    existingClaim: syncthing-config
+    globalMounts: 
+      - path: /var/syncthing
+        readOnly: false
+  media:
+    enabled: true
+    type: nfs
+    server: ${SECRET_NFS_ADDR}
+    path: /Documents/SyncThing
+    globalMounts:
+      - path: /data
+        readOnly: false
+
+

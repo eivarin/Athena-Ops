@@ -6,4 +6,5 @@ resources:
   - ./homepage/ks.yml
   - ./kitchenowl/ks.yml
   - ./linkwarden/ks.yml
+  - ./syncthing/ks.yml
   # - ./nextcloud/ks.yml
