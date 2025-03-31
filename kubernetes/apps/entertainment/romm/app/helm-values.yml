@@ -1,0 +1,86 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+    pod:
+      hostname: &app romm
+      annotations:
+        app.kubernetes.io/name: *app
+        app.kubernetes.io/instance: *app
+    containers:
+      app:
+        image:
+          repository: ghcr.io/rommapp/romm
+          tag: 3.8.1
+          pullPolicy: IfNotPresent
+        env:
+          TZ: ${TIMEZONE}
+          ROMM_DB_DRIVER: postgresql
+          ROMM_HOST: "romm.${SECRET_PRIVATE_DOMAIN}"
+        envFrom:
+          - secretRef:
+              name: romm-secrets
+        resources:
+          requests:
+            memory: 512M
+            cpu: 10m
+          limits:
+            memory: 1024M
+
+        probes:
+          liveness: &probe
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: &port 8080
+              initialDelaySeconds: 0
+              periodSeconds: 30
+              timeoutSeconds: 5
+              failureThreshold: 10
+          readiness: *probe
+
+defaultPodOptions:
+  nodeSelector:
+    node-role.kubernetes.io/worker: ""
+
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: *port
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - "romm.${SECRET_PRIVATE_DOMAIN}"
+    rules:
+      - backendRefs:
+        - name: *app
+          port: *port
+
+
+persistence:
+  romm-config:
+    existingClaim: romm-config
+    globalMounts: 
+      - path: /romm
+        readOnly: false
+  media:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: entertainment-storage-nfs-games
+    globalMounts:
+      - path: /romm/library
+        readOnly: false
+        subPath: ROMs
+

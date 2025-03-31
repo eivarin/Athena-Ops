@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - ./namespace.yml
   - ./storage/ks.yml
-
   - ./bazarr/ks.yml
   - ./calibre/ks.yml
   - ./deluge/ks.yml
@@ -17,6 +16,7 @@ resources:
   - ./radarr/ks.yml
   - ./readarr/ks.yml
   - ./recyclarr/ks.yml
+  - ./romm/ks.yml
   - ./sabnzbd/ks.yml
   - ./sonarr/ks.yml
   - ./tdarr-server/ks.yml
