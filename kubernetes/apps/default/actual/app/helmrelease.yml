@@ -50,6 +50,10 @@ spec:
               limits:
                 memory: 512M
 
+    defaultPodOptions:
+      nodeSelector:
+        node-role.kubernetes.io/worker: ""
+
     service:
       actual:
         controller: app

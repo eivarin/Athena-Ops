@@ -38,6 +38,10 @@ controllers:
             cpu: 10m
           limits:
             memory: 128Mi
+
+defaultPodOptions:
+  nodeSelector:
+    node-role.kubernetes.io/worker: ""
 persistence:
   config:
     type: emptyDir

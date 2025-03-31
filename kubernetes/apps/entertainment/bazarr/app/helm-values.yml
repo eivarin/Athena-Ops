@@ -39,6 +39,10 @@ controllers:
               failureThreshold: 3
           readiness: *probe
 
+defaultPodOptions:
+  nodeSelector:
+    node-role.kubernetes.io/worker: ""
+
 service:
   web:
     controller: app

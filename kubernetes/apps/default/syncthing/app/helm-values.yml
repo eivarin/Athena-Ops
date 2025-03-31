@@ -41,6 +41,8 @@ controllers:
           readiness: *probe
 
 defaultPodOptions:
+  nodeSelector:
+    node-role.kubernetes.io/worker: ""
   securityContext:
     runAsUser: 1000
     runAsGroup: 1000
