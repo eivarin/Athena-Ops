@@ -64,7 +64,7 @@ route:
         namespace: network
         sectionName: https-wildcard-secret-private-domain
     hostnames:
-      - "calibre-gui.${SECRET_PRIVATE_DOMAIN}"
+      - "calibre.${SECRET_PRIVATE_DOMAIN}"
     rules:
       - backendRefs:
         - name: calibre
