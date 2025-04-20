@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - ./namespace.yml
   - ./prometheus-operator-crds/ks.yml
-  - ./kubernetes-dashboard/ks.yml
-  - ./uptime-kuma/ks.yml
+  # - ./kubernetes-dashboard/ks.yml
+  # - ./uptime-kuma/ks.yml
