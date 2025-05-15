@@ -32,6 +32,16 @@ patches:
 
 # Controller patches
 controlPlane:
+  schematic:
+    customization:
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/gasket-driver
+          - siderolabs/i915
+          - siderolabs/intel-ucode
+          - siderolabs/iscsi-tools
+          - siderolabs/qemu-guest-agent
+          - siderolabs/util-linux-tools
   patches:
     - "@./patches/controller/api-access.yml"
     - "@./patches/controller/cluster.yml"
@@ -40,6 +50,16 @@ controlPlane:
     - "@./patches/controller/etcd.yml"
 
 worker:
+  schematic:
+    customization:
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/gasket-driver
+          - siderolabs/i915
+          - siderolabs/intel-ucode
+          - siderolabs/iscsi-tools
+          - siderolabs/qemu-guest-agent
+          - siderolabs/util-linux-tools
   patches:
     - "@./patches/worker/priority.yml"
 
@@ -60,16 +80,6 @@ nodes:
         mtu: 1500
         vip:
           ip: "10.0.2.100"
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/gasket-driver
-            - siderolabs/i915
-            - siderolabs/intel-ucode
-            - siderolabs/iscsi-tools
-            - siderolabs/qemu-guest-agent
-            - siderolabs/util-linux-tools
 
   - hostname: "athena-agent1"
     ipAddress: "10.0.2.111"
@@ -108,16 +118,6 @@ nodes:
           - network: 0.0.0.0/0
             gateway: "10.0.2.1"
         mtu: 1500
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/gasket-driver
-            - siderolabs/i915
-            - siderolabs/intel-ucode
-            - siderolabs/iscsi-tools
-            - siderolabs/qemu-guest-agent
-            - siderolabs/util-linux-tools
     machineDisks:
       - device: /dev/sdb
         partitions:
