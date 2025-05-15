@@ -7,7 +7,9 @@ tasks:
   generate-config:
     desc: Generate Talos configuration
     dir: '{{.TALHELPER_DIR}}'
-    cmd: talhelper genconfig
+    cmds: 
+    - talhelper genconfig -c talconfig.yml
+    - rename .yaml .yml  clusterconfig/*.yaml
     preconditions:
       - test -f {{.TALHELPER_DIR}}/talconfig.yml
       - test -f {{.ROOT_DIR}}/.sops.yml
