@@ -134,3 +134,18 @@ nodes:
                   - bind
                   - rshared
                   - rw
+
+  - hostname: "athena-agent3"
+    ipAddress: "10.0.2.113"
+    installDisk: "/dev/sda"
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:d5:1f:0a"
+        dhcp: false
+        addresses:
+          - "10.0.2.113/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "10.0.2.1"
+        mtu: 1500
