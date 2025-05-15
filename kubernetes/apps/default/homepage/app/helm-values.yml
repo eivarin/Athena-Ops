@@ -33,7 +33,7 @@ defaultPodOptions:
                 value: 1
 service:
   app:
-    controller: *app
+    controller: app
     ports:
       http:
         port: 3000
@@ -83,4 +83,4 @@ persistence:
         subPath: Homepage
 serviceAccount:
   create: true
-  name: *app
+  name: homepage
