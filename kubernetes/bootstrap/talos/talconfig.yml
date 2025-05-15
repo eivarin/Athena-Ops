@@ -36,14 +36,12 @@ controlPlane:
     - "@./patches/controller/api-access.yml"
     - "@./patches/controller/cluster.yml"
     - "@./patches/controller/disable-admission-controller.yml"
+    - "@./patches/controller/priority.yml"
     - "@./patches/controller/etcd.yml"
 
 worker:
   patches:
-    - |-
-      machine:
-        nodeLabels:
-          node-role.kubernetes.io/worker: ""
+    - "@./patches/worker/priority.yml"
 
 nodes:
   - hostname: "athena-server1"
@@ -87,16 +85,12 @@ nodes:
           - network: 0.0.0.0/0
             gateway: "10.0.2.1"
         mtu: 1500
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/gasket-driver
-            - siderolabs/i915
-            - siderolabs/intel-ucode
-            - siderolabs/iscsi-tools
-            - siderolabs/qemu-guest-agent
-            - siderolabs/util-linux-tools
+    patches:
+    - |-
+      - op: add
+        path: /machine/nodeLabels
+        value:
+          node-priority: 1
 
   - hostname: "athena-agent2"
     ipAddress: "10.0.2.112"
