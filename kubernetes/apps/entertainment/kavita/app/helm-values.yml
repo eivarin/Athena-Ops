@@ -33,10 +33,10 @@ controllers:
               httpGet:
                 path: /
                 port: &port 5000
-              initialDelaySeconds: 0
-              periodSeconds: 10
-              timeoutSeconds: 1
-              failureThreshold: 3
+              initialDelaySeconds: 20
+              periodSeconds: 60
+              timeoutSeconds: 120
+              failureThreshold: 5
           readiness: *probe
 
 
