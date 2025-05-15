@@ -1,0 +1,82 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+
+    pod:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        runAsNonRoot: true
+        fsGroupChangePolicy: "OnRootMismatch"
+
+    containers:
+      app:
+        image:
+          repository: tombursch/kitchenowl
+          tag: v0.6.14
+          pullPolicy: IfNotPresent
+
+        env:
+          TZ: Europe/Lisbon
+          JWT_SECRET_KEY: ${SECRET_KITCHENOWL_JWT_SECRET_KEY}
+          FRONT_URL: https://kitchenowl.${SECRET_PUBLIC_DOMAIN1}
+
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            memory: 512Mi
+
+        probes:
+          liveness: &probe
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: &port 8080
+              initialDelaySeconds: 20
+              periodSeconds: 30
+              timeoutSeconds: 20
+              failureThreshold: 5
+          readiness: *probe
+defaultPodOptions:
+  nodeSelector:
+    node-role.kubernetes.io/worker: ""
+service:
+  kitchenowl:
+    controller: app
+    ports:
+      http:
+        port: *port
+
+ingress:
+  kitchenowl-public:
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      cert-manager.io/cluster-issuer: letsencrypt-production
+      external-dns.alpha.kubernetes.io/target: ${SECRET_PUBLIC_DOMAIN1}
+    className: traefik-public
+    hosts:
+      - host: &kitchenowl-public-path kitchenowl.${SECRET_PUBLIC_DOMAIN1}
+        paths:
+          - path: /
+            service:
+              identifier: kitchenowl
+              port: http
+    tls:
+      - secretName: kitchenowl-${SECRET_PUBLIC_DOMAIN1//./-}-tls
+        hosts:
+          - *kitchenowl-public-path
+
+persistence:
+  kitchenowl-data:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: kitchenowl-data
+    globalMounts:
+      - path: /data
+        readOnly: false
