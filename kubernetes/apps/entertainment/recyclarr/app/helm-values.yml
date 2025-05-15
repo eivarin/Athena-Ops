@@ -40,8 +40,21 @@ controllers:
             memory: 128Mi
 
 defaultPodOptions:
-  nodeSelector:
-    node-role.kubernetes.io/worker: ""
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: Gt
+                value: 0
+        - weight: 2
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: Gt
+                value: 1
 persistence:
   config:
     type: emptyDir

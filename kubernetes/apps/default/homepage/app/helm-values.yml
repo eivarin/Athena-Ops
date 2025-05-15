@@ -1,5 +1,5 @@
 controllers:
-  homepage:
+  app:
     replicas: 1
     strategy: RollingUpdate
     containers:
@@ -16,8 +16,21 @@ controllers:
           limits:
             memory: 512Mi
 defaultPodOptions:
-  nodeSelector:
-    node-role.kubernetes.io/worker: ""
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: Gt
+                value: 0
+        - weight: 2
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: Gt
+                value: 1
 service:
   app:
     controller: *app
