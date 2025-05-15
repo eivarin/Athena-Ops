@@ -1,0 +1,74 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: traefik-public-default
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    external-dns.alpha.kubernetes.io/target: ${SECRET_PUBLIC_DOMAIN1}
+    acme.cert-manager.io/http01-edit-in-place: "true"
+spec:
+  gatewayClassName: traefik-public
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: https-hass
+      protocol: HTTPS
+      hostname: "hass.${SECRET_PUBLIC_DOMAIN1}"
+      port: 443
+      allowedRoutes:
+        kinds:
+          - kind: HTTPRoute
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: hass-tls
+
+    - name: https-nc
+      protocol: HTTPS
+      hostname: "nc.${SECRET_PUBLIC_DOMAIN1}"
+      port: 443
+      allowedRoutes:
+        kinds:
+          - kind: HTTPRoute
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: nc-tls
+
+    - name: https-vw
+      protocol: HTTPS
+      hostname: "vw.${SECRET_PUBLIC_DOMAIN1}"
+      port: 443
+      allowedRoutes:
+        kinds:
+          - kind: HTTPRoute
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: vw-tls
+
+    - name: https-jellyfin
+      protocol: HTTPS
+      hostname: "jellyfin.${SECRET_PUBLIC_DOMAIN1}"
+      port: 443
+      allowedRoutes:
+        kinds:
+          - kind: HTTPRoute
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: jellyfin-tls
