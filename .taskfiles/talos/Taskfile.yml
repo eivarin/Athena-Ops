@@ -30,6 +30,18 @@ tasks:
       - test -f {{.TALOSCONFIG}}
       - which talhelper talosctl yq
 
+  apply-every-node:
+    desc: Apply Talos config to every node
+    dir: '{{.TALHELPER_DIR}}'
+    cmd: talhelper gencommand apply -c talconfig.yml --extra-flags '--mode={{.MODE}}' | sed "s/\.yaml/.yml/" | bash
+    vars:
+      MODE: '{{.MODE | default "auto"}}'
+    preconditions:
+      - talosctl --nodes {{.IP}} get machineconfig
+      - talosctl config info
+      - test -f {{.TALOSCONFIG}}
+      - which talhelper talosctl yq
+
   upgrade-node:
     desc: Upgrade Talos on a single node [IP=required]
     dir: '{{.TALHELPER_DIR}}'
