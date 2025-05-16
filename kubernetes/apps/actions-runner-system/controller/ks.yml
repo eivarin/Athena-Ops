@@ -5,7 +5,7 @@ metadata:
   name: gha-runner-scale-set-controller
   namespace: flux-system
 spec:
-  targetNamespace: default
+  targetNamespace: actions-runner-system
   interval: 10m0s
   retryInterval: 1m
   path: ./kubernetes/apps/actions-runner-system/controller/app
