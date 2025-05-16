@@ -47,14 +47,16 @@ defaultPodOptions:
           preference:
             matchExpressions:
               - key: node-priority
-                operator: Gt
-                value: 0
+                operator: In
+                values: 
+                - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
-                operator: Gt
-                value: 1
+                operator: In
+                values: 
+                - "2"
 
 service:
   web:
