@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yml
   - ./webhooks/ks.yml
-  # - ./private-repo/ks.yml
+  - ./private-repo/ks.yml
