@@ -8,7 +8,7 @@ resources:
   # - ./calibre/ks.yml
   # - ./deluge/ks.yml
   # - ./flaresolverr/ks.yml
-  # - ./jellyfin/ks.yml
+  - ./jellyfin/ks.yml
   # - ./jellyseerr/ks.yml
   # - ./jellystat/ks.yml
   # # - ./kavita/ks.yml
