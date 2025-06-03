@@ -40,6 +40,10 @@ controllers:
               failureThreshold: 5
           readiness: *probe
 
+defaultPodOptions:
+  nodeSelector:
+    intel.feature.node.kubernetes.io/gpu: 'true'
+
 service:
   web:
     controller: app
