@@ -4,19 +4,19 @@ kind: Kustomization
 resources:
   - ./namespace.yml
   - ./storage/ks.yml
-  # - ./bazarr/ks.yml
-  # - ./calibre/ks.yml
-  # - ./deluge/ks.yml
-  # - ./flaresolverr/ks.yml
+  - ./bazarr/ks.yml
+  - ./calibre/ks.yml
+  - ./deluge/ks.yml
+  - ./flaresolverr/ks.yml
   - ./jellyfin/ks.yml
-  # - ./jellyseerr/ks.yml
-  # - ./jellystat/ks.yml
-  # # - ./kavita/ks.yml
-  # - ./prowlarr/ks.yml
-  # - ./radarr/ks.yml
-  # - ./readarr/ks.yml
-  # - ./recyclarr/ks.yml
-  # - ./romm/ks.yml
-  # - ./sabnzbd/ks.yml
-  # - ./sonarr/ks.yml
-  # - ./tdarr-server/ks.yml
+  - ./jellyseerr/ks.yml
+  - ./jellystat/ks.yml
+  # - ./kavita/ks.yml
+  - ./prowlarr/ks.yml
+  - ./radarr/ks.yml
+  - ./readarr/ks.yml
+  - ./recyclarr/ks.yml
+  - ./romm/ks.yml
+  - ./sabnzbd/ks.yml
+  - ./sonarr/ks.yml
+  - ./tdarr-server/ks.yml
