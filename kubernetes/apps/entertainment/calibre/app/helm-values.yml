@@ -45,18 +45,18 @@ defaultPodOptions:
     nodeAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - weight: 1
-          preference:
+          preferencce:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 
 service:
