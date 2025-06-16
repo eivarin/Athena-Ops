@@ -5,3 +5,4 @@ resources:
   - ./namespace.yml
   - ./webhooks/ks.yml
   - ./private-repo/ks.yml
+  - ./capacitor/ks.yml

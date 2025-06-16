@@ -1,0 +1,104 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+    pod:
+      hostname: &app capacitor
+      annotations:
+        app.kubernetes.io/name: *app
+        app.kubernetes.io/instance: *app
+    containers:
+      app:
+        image:
+          repository: ghcr.io/gimlet-io/capacitor
+          tag: v0.4.8
+          pullPolicy: IfNotPresent
+        env:
+          TZ: ${TIMEZONE}
+        resources:
+          requests:
+            cpu: 50m
+            memory: 100Mi
+            ephemeral-storage: 1Gi
+          limits:
+            memory: 200Mi
+            ephemeral-storage: 2Gi
+        securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ALL] }
+
+serviceAccount:
+  create: true
+  name: capacitor
+
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: &port 9000
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - "capacitor.${SECRET_PRIVATE_DOMAIN}"
+    rules:
+      - backendRefs:
+        - name: *app
+          port: *port
+
+
+rbac:
+  roles:
+    capacitor:
+      type: ClusterRole
+      rules:
+        - apiGroups: ["networking.k8s.io", "apps", ""]
+          resources:
+            [
+              "pods",
+              "pods/log",
+              "ingresses",
+              "deployments",
+              "services",
+              "secrets",
+              "events",
+              "configmaps",
+            ]
+          verbs: ["get", "watch", "list"]
+        - apiGroups:
+            [
+              "source.toolkit.fluxcd.io",
+              "kustomize.toolkit.fluxcd.io",
+              "helm.toolkit.fluxcd.io",
+              "infra.contrib.fluxcd.io",
+            ]
+          resources:
+            [
+              "gitrepositories",
+              "ocirepositories",
+              "buckets",
+              "helmrepositories",
+              "helmcharts",
+              "kustomizations",
+              "helmreleases",
+              "terraforms",
+            ]
+          verbs: ["get", "watch", "list", "patch"]
+  bindings:
+    capacitor:
+      type: ClusterRoleBinding
+      roleRef:
+        identifier: capacitor
+      subjects:
+        - kind: ServiceAccount
+          name: capacitor
+          namespace: flux-system
