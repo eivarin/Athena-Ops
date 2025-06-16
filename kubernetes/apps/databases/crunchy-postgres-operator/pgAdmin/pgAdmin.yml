@@ -12,7 +12,7 @@ spec:
   dataVolumeClaimSpec:
     accessModes:
     - ReadWriteOnce
-    storageClassName: pgadmin-data
+    storageClassName: longhorn-static
     volumeName: pgadmin-data
     resources:
       requests:
