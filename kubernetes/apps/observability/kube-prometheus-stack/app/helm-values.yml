@@ -3,3 +3,27 @@ crds:
   upgradeJob:
     enabled: true
     forceConflicts: true
+
+prometheusOperator:
+  resources:
+    requests:
+      cpu: 35m
+      memory: 273M
+    limits:
+      memory: 326M
+  prometheusConfigReloader:
+    # resource config for prometheusConfigReloader
+    resources:
+      requests:
+        cpu: 5m
+        memory: 32M
+      limits:
+        memory: 32M
+
+prometheus:
+  prometheusSpec:
+    resources:
+      requests:
+        cpu: 100m
+      limits:
+        memory: 1500M
