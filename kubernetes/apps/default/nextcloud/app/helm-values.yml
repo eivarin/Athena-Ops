@@ -54,7 +54,7 @@ ingress:
 service:
   annotations:
     traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
-    
+
 nextcloud:
   host: nc.${SECRET_PUBLIC_DOMAIN1}
 
@@ -77,6 +77,7 @@ nextcloud:
         'trusted_domains' =>
         array(
             0 => 'nc.${SECRET_PUBLIC_DOMAIN1}',
+            1 => 'nc.${SECRET_PRIVATE_DOMAIN}',
             2 => 'localhost',
         ),
         'forwarded_for_headers' => array('HTTP_X_FORWARDED_FOR'),
@@ -87,7 +88,7 @@ internalDatabase:
 externalDatabase:
   enabled: true
   type: postgresql
-  host: postgres-primary.databases.svc:5432 
+  host: postgres-primary.databases.svc:5432
   database: nextcloud
   user: nextcloud
   # password: set by valuesFrom
