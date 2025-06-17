@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./externalsecret.yml
   - ./helmrelease.yml
-  - ./ingressroute.yml
+  - ./route.yml
 configMapGenerator:
   - name: nextcloud-helm-values
     files:
