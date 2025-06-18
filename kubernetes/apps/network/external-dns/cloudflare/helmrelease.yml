@@ -25,7 +25,7 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    image: 
+    image:
       repository: registry.k8s.io/external-dns/external-dns
       tag: v0.17.0
 
@@ -46,7 +46,7 @@ spec:
       - --ingress-class=traefik-public
       - --gateway-name=traefik-public-default
     triggerLoopOnEvent: true
-    policy: sync
+    policy: upsert-only
     sources: ["crd", "ingress", "gateway-httproute", "gateway-grpcroute"]
     txtPrefix: k8s.
     txtOwnerId: default
