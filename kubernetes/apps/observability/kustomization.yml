@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yml
-  - ./kube-prometheus-stack/ks.yml
+  # - ./kube-prometheus-stack/ks.yml
   # - ./prometheus-operator-crds/ks.yml
   # - ./kubernetes-dashboard/ks.yml
   # - ./uptime-kuma/ks.yml

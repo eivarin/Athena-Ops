@@ -8,4 +8,4 @@ resources:
   - ./kitchenowl/ks.yml
   - ./linkwarden/ks.yml
   - ./syncthing/ks.yml
-  - ./nextcloud/ks.yml
+  # - ./nextcloud/ks.yml
