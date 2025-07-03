@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   # - adguard.yml
   - hass.yml
-  # - nc.yml
+  - nc.yml
   # - omada.yml
   - omv.yml
   # - opn.yml
