@@ -20,18 +20,14 @@ spec:
           dnsZones:
             - "${SECRET_PUBLIC_DOMAIN1}"
       - http01:
-          ingress:
-            ingressClassName: traefik-public
-            ingressTemplate:
-              metadata:
-                annotations:
-                  external-dns.alpha.kubernetes.io/target: ${SECRET_PUBLIC_DOMAIN1}
-                  traefik.ingress.kubernetes.io/router.tls: "true"
-                  traefik.ingress.kubernetes.io/frontend-entry-points: "https"
+          gatewayHTTPRoute:
+            parentRefs:
+              - name: traefik-public-default
+                namespace: network
+                kind: Gateway
         selector:
           dnsZones:
             - "vw.${SECRET_PUBLIC_DOMAIN1}"
-            - "${SECRET_PUBLIC_DOMAIN2}"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
