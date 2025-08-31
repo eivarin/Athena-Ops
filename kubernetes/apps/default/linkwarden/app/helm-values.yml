@@ -16,7 +16,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/linkwarden/linkwarden
-          tag: v2.9.3
+          tag: v2.12.2
           pullPolicy: IfNotPresent
 
         env:
