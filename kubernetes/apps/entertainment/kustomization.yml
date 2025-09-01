@@ -11,7 +11,7 @@ resources:
   - ./jellyfin/ks.yml
   - ./jellyseerr/ks.yml
   - ./jellystat/ks.yml
-  # - ./kavita/ks.yml
+  - ./kavita/ks.yml
   - ./prowlarr/ks.yml
   - ./radarr/ks.yml
   - ./readarr/ks.yml
