@@ -98,9 +98,9 @@ persistence:
       - path: /romm/library
         readOnly: false
         subPath: ROMs
-  romm-config-yml:
+  config-yml:
     type: configMap
-    name: romm-config
+    name: config-yml-romm
     identifier: config.yml
     globalMounts:
       - path: /romm/config/config.yml

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: romm-config
+  name: config-yml-romm
 data:
   config.yml: |
     # This is a generic example of a configuration file
