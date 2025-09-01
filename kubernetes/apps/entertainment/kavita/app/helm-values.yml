@@ -36,7 +36,7 @@ controllers:
               initialDelaySeconds: 20
               periodSeconds: 60
               timeoutSeconds: 120
-              failureThreshold: 5
+              failureThreshold: 20
           readiness: *probe
 
 
@@ -49,14 +49,14 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 
 service:
@@ -85,7 +85,7 @@ route:
 persistence:
   kavita-config:
     existingClaim: kavita-config
-    globalMounts: 
+    globalMounts:
       - path: /config
         readOnly: false
   media:
