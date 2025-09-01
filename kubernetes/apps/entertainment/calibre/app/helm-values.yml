@@ -45,7 +45,7 @@ defaultPodOptions:
     nodeAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - weight: 1
-          preferencce:
+          preference:
             matchExpressions:
               - key: node-priority
                 operator: In
