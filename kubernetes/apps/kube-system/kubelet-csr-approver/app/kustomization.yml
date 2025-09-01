@@ -6,6 +6,6 @@ resources:
 configMapGenerator:
   - name: kubelet-csr-approver-helm-values
     files:
-      - values.yml=./helm-values.yml
+      - values.yaml=./helm-values.yml
 configurations:
   - kustomizeconfig.yml
