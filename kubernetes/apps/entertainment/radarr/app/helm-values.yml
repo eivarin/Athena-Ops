@@ -12,7 +12,7 @@ controllers:
       app:
         image:
           repository: lscr.io/linuxserver/radarr
-          tag: 5.17.2
+          tag: 5.26.2
           pullPolicy: IfNotPresent
         env:
           PUID: 1000
