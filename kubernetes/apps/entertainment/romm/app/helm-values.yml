@@ -12,7 +12,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/rommapp/romm
-          tag: 3.10.3
+          tag: 4.1.6
           pullPolicy: IfNotPresent
         env:
           TZ: ${TIMEZONE}
