@@ -101,8 +101,7 @@ persistence:
   config-yml:
     type: configMap
     name: config-yml-romm
-    identifier: config.yml
     globalMounts:
-      - path: /romm/config/config.yml
+      - path: /romm/config
         readOnly: false
 
