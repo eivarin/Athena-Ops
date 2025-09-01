@@ -51,14 +51,14 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 
 service:
@@ -87,7 +87,7 @@ route:
 persistence:
   romm-config:
     existingClaim: romm-config
-    globalMounts: 
+    globalMounts:
       - path: /romm
         readOnly: false
   media:
@@ -98,4 +98,11 @@ persistence:
       - path: /romm/library
         readOnly: false
         subPath: ROMs
+  romm-config-yml:
+    type: configMap
+    name: romm-config
+    identifier: config.yml
+    globalMounts:
+      - path: /romm/config/config.yml
+        readOnly: false
 
