@@ -43,7 +43,7 @@ infisical:
 
   resources:
     limits:
-      memory: 600Mi
+      memory: 1024Mi
     requests:
       cpu: 350m
 
@@ -98,7 +98,7 @@ redis:
   cluster:
     # -- Clustered Redis deployment
     enabled: false
-  
+
   # -- Requires a password for Redis authentication
   usePassword: true
 
