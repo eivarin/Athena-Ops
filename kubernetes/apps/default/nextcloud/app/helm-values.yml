@@ -1,7 +1,8 @@
 image:
-  flavor: apache
+  repository: ghcr.io/eivarin/nextcloud
+  tag: 30.0.6-fpm-alpine@sha256:737671470eb32624b6c71765b0323d27f24061911c8ed23696097d480838fce7
 nginx:
-  enabled: false
+  enabled: true
   # resources:
   #   requests:
   #     cpu: 500m
@@ -18,15 +19,34 @@ env:
 #   supplementalGroups:
 #     - 100
 
+affinity: &affinity
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+            - key: node-priority
+              operator: In
+              values:
+              - "1"
+      - weight: 2
+        preference:
+          matchExpressions:
+            - key: node-priority
+              operator: In
+              values:
+              - "2"
+
+
 persistence:
   existingClaim: nextcloud
   enabled: true
   # accessMode: ReadWriteMany
   # storageClass: longhorn
-  nextcloudData:
+  # nextcloudData:
   #   accessMode: ReadWriteMany
-    enabled: false
-    existingClaim: nextcloud
+    # enabled: false
+    # existingClaim: nextcloud
 resources:
   requests:
     cpu: 200m
@@ -38,19 +58,6 @@ hpa:
 
 ingress:
   enabled: false
-  # enabled: true
-  # className: "traefik-external"
-  # annotations:
-  #   cert-manager.io/cluster-issuer: "letsencrypt-production-external"
-  #   traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-  #   traefik.ingress.kubernetes.io/router.middlewares: |
-  #     networking-cloudflare-only@kubernetescrd,
-  #     networking-request-limit@kubernetescrd
-  # tls:
-  #   - hosts:
-  #       - "nextcloud.${EXTERNAL_DOMAIN}"
-  #     secretName: "nextcloud-tls"
-
 service:
   annotations:
     traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
@@ -63,6 +70,16 @@ nextcloud:
     secretName: nextcloud
     usernameKey: admin_user
     passwordKey: admin_password
+
+  extraVolumes:
+    - name: nfs
+      nfs:
+        server: "${SECRET_NFS_ADDR}"
+        path: "/all"
+        readOnly: false
+  extraVolumeMounts:
+    - name: nfs
+      mountPath: "/mnt/nfs"
 
   configs:
     proxy.config.php: |-
@@ -103,13 +120,15 @@ cronjob:
       cpu: 5m
       memory: 10Mi
     limits:
-      memory: 50Mi
+      memory: 1Gi
 
 postgresql:
   enabled: false
 
 redis:
   enabled: true
+  affinity: *affinity
+  architecture: standalone
   auth:
     enabled: false
 

@@ -14,6 +14,6 @@ spec:
     - "nc.${SECRET_PRIVATE_DOMAIN}"
     - "nc.${SECRET_PUBLIC_DOMAIN1}"
   rules:
-    - backendRefs:
+    - backendRefs: &backendRef
         - name: nextcloud
           port: 8080
