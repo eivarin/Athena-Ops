@@ -12,7 +12,7 @@ controllers:
       app:
         image:
           repository: lscr.io/linuxserver/readarr
-          tag: 0.4.13-nightly
+          tag: 0.4.19-nightly
           pullPolicy: IfNotPresent
         env:
           PUID: 1000
