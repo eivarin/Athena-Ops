@@ -25,3 +25,4 @@ wiki
 # Bootstrap
 /config.yml
 /test*.yml
+toolkit.sh
