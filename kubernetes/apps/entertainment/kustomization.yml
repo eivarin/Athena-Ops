@@ -15,7 +15,6 @@ resources:
   - ./kavita/ks.yml
   - ./prowlarr/ks.yml
   - ./radarr/ks.yml
-  # - ./readarr/ks.yml
   - ./recyclarr/ks.yml
   - ./romm/ks.yml
   - ./sabnzbd/ks.yml

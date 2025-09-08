@@ -76,6 +76,7 @@ route:
         sectionName: https-wildcard-secret-private-domain
     hostnames:
       - "bookshelf.${SECRET_PRIVATE_DOMAIN}"
+      - "readarr.${SECRET_PRIVATE_DOMAIN}"
     rules:
       - backendRefs:
         - name: *app
