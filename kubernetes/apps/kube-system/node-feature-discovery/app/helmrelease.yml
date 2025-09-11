@@ -19,7 +19,7 @@ spec:
         sources:
           cpu:
             cpuid:
-              attributeWhitelist: [AVX, AVX2, SSE, SSE2, SSE3, SSSE3, SSE4_1, SSE4_2]
+              attributeWhitelist: [AVX, AVX2]
         core:
           labelSources:
             - pci
