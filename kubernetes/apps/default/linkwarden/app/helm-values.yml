@@ -30,23 +30,32 @@ controllers:
         resources:
           requests:
             cpu: 100m
-          limits:
             memory: 512Mi
+          limits:
+            memory: 1Gi
 
         probes:
-          liveness: &probe
+          liveness:
             enabled: true
-            custom: true
+            type: TCP
+            port: &port 3000
+          readiness:
+            enabled: true
+            type: HTTPS
+            port: *port
+            path: /
+          startup:
+            enabled: true
+            type: HTTPS
+            port: *port
+            path: /
             spec:
-              httpGet:
-                path: /
-                port: &port 3000
-              initialDelaySeconds: 20
-              periodSeconds: 30
-              timeoutSeconds: 20
-              failureThreshold: 5
-          readiness: *probe
-          
+              initialDelaySeconds: 0
+              timeoutSeconds: 1
+              periodSeconds: 10
+              failureThreshold: 30
+
+
 defaultPodOptions:
   affinity:
     nodeAffinity:
@@ -56,14 +65,14 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 
 service:
