@@ -112,7 +112,7 @@ externalDatabase:
   # password: set by valuesFrom
 
 externalRedis:
-  enabled: false
+  enabled: true
 
   ## Redis host
   host: "dragonfly.databases.svc.cluster.local"
