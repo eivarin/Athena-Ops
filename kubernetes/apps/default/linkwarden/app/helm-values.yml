@@ -23,7 +23,6 @@ controllers:
           NEXTAUTH_URL: https://linkwarden.${SECRET_PUBLIC_DOMAIN1}/api/v1/auth
           STORAGE_FOLDER: "config" # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
           HOME: /data/config
-          PLAYWRIGHT_WS_URL: "ws://localhost:3001/chrome"
         envFrom:
           - secretRef:
               name: linkwarden-secrets
@@ -55,24 +54,6 @@ controllers:
               timeoutSeconds: 1
               periodSeconds: 10
               failureThreshold: 30
-      browser:
-        image:
-          repository: docker.io/browserless/chrome
-          tag: latest@sha256:57d19e414d9fe4ae9d2ab12ba768c97f38d51246c5b31af55a009205c136012f
-          pullPolicy: IfNotPresent
-
-        env:
-          - { name: CONNECTION_TIMEOUT, value: "300000" }
-          - { name: MAX_CONCURRENT_SESSIONS, value: "1" }
-          - { name: DATA_DIR, value: "/profile" }
-          - { name: PORT, value: "3001" }
-
-        resources:
-          requests:
-            cpu: 10m
-            memory: 1Gi
-          limits:
-            memory: 4Gi
 
 defaultPodOptions:
   affinity:
