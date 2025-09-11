@@ -124,6 +124,11 @@ nodes:
           - mountpoint: /var/mnt/nvme
     patches:
       - |-
+        - op: add
+          path: /machine/nodeLabels
+          value:
+            node-priority: 1
+      - |-
         machine:
           kubelet:
             extraMounts:
