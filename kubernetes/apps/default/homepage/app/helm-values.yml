@@ -24,14 +24,14 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 service:
   app:
@@ -84,5 +84,4 @@ persistence:
       - path: /app/config
         subPath: Homepage
 serviceAccount:
-  create: true
-  name: homepage
+  homepage: {}

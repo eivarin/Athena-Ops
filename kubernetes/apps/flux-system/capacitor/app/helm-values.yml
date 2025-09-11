@@ -30,8 +30,8 @@ controllers:
               capabilities: { drop: [ALL] }
 
 serviceAccount:
-  create: true
-  name: capacitor
+  capacitor: {}
+
 
 service:
   web:

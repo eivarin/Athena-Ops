@@ -89,7 +89,7 @@ postgresql:
 
 redis:
   # -- Enables an in-cluster Redis deployment
-  enabled: true
+  enabled: false
   # -- Redis resource name
   name: "redis"
   # -- Full name override for Redis resources

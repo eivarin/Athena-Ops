@@ -71,6 +71,7 @@ nextcloud:
     usernameKey: admin_user
     passwordKey: admin_password
 
+
   extraVolumes:
     - name: nfs
       nfs:
@@ -110,6 +111,16 @@ externalDatabase:
   user: nextcloud
   # password: set by valuesFrom
 
+externalRedis:
+  enabled: false
+
+  ## Redis host
+  host: "dragonfly.databases.svc.cluster.local"
+
+  ## Redis port
+  port: "6379"
+
+
 cronjob:
   enabled: true
   failedJobsHistoryLimit: 1
@@ -126,7 +137,7 @@ postgresql:
   enabled: false
 
 redis:
-  enabled: true
+  enabled: false
   affinity: *affinity
   architecture: standalone
   auth:
