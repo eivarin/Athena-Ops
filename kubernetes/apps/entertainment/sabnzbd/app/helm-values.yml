@@ -49,14 +49,14 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 
 service:
@@ -85,7 +85,7 @@ route:
 persistence:
   sabnzbd-config:
     existingClaim: sabnzbd-config
-    globalMounts: 
+    globalMounts:
       - path: /config
         readOnly: false
   media:
