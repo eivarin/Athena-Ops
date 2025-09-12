@@ -1,3 +1,26 @@
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: &port 5055
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - "jellyseerr.${SECRET_PRIVATE_DOMAIN}"
+    rules:
+      - backendRefs:
+        - name: jellyseerr
+          port: *port
+
+
 controllers:
   app:
     enabled: true
@@ -25,19 +48,19 @@ controllers:
           limits:
             memory: 1Gi
 
-        probes:
-          liveness: &probe
-            enabled: true
-            custom: true
-            spec:
-              httpGet:
-                path: /api/v1/status
-                port: &port 5055
-              initialDelaySeconds: 0
-              periodSeconds: 10
-              timeoutSeconds: 1
-              failureThreshold: 3
-          readiness: *probe
+        # probes:
+        #   liveness: &probe
+        #     enabled: true
+        #     custom: true
+        #     spec:
+        #       httpGet:
+        #         path: /api/v1/status
+        #         port: &port 5055
+        #       initialDelaySeconds: 0
+        #       periodSeconds: 10
+        #       timeoutSeconds: 1
+        #       failureThreshold: 3
+        #   readiness: *probe
 
 
 defaultPodOptions:
@@ -49,43 +72,20 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
-
-service:
-  web:
-    controller: app
-    ports:
-      http:
-        port: *port
-
-route:
-  main:
-    enabled: true
-    kind: HTTPRoute
-    parentRefs:
-      - name: traefik-private-default
-        namespace: network
-        sectionName: https-wildcard-secret-private-domain
-    hostnames:
-      - "jellyseerr.${SECRET_PRIVATE_DOMAIN}"
-    rules:
-      - backendRefs:
-        - name: jellyseerr
-          port: *port
-
 
 persistence:
   jellyseerr-config:
     existingClaim: jellyseerr-config
-    globalMounts: 
+    globalMounts:
       - path: /app/config
         readOnly: false
   media:

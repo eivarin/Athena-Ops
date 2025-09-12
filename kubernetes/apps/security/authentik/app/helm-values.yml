@@ -22,11 +22,15 @@ server:
       # -- Route hostnames
       hostnames:
         - "authentik.${SECRET_PUBLIC_DOMAIN1}"
+        - "authentik.${SECRET_PRIVATE_DOMAIN}"
       # -- Reference to parent gateways
       parentRefs:
         - name: traefik-public-default
           namespace: network
           sectionName: https-authentik
+        - name: traefik-private-default
+          namespace: network
+          sectionName: https-wildcard-secret-private-domain
 
 postgresql:
   enabled: false

@@ -1,3 +1,29 @@
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: &port 8096
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+      - name: traefik-public-default
+        namespace: network
+        sectionName: https-jellyfin
+    hostnames:
+      - "jellyfin.${SECRET_PRIVATE_DOMAIN}"
+      - "jellyfin.${SECRET_PUBLIC_DOMAIN1}"
+    rules:
+      - backendRefs:
+        - name: jellyfin
+          port: *port
+
 controllers:
   app:
     enabled: true
@@ -26,51 +52,23 @@ controllers:
             gpu.intel.com/i915: "1"
             memory: 4Gi
 
-        probes:
-          liveness: &probe
-            enabled: true
-            custom: true
-            spec:
-              httpGet:
-                path: /
-                port: &port 8096
-              initialDelaySeconds: 20
-              periodSeconds: 30
-              timeoutSeconds: 20
-              failureThreshold: 5
-          readiness: *probe
+        # probes:
+        #   liveness: &probe
+        #     enabled: true
+        #     custom: true
+        #     spec:
+        #       httpGet:
+        #         path: /
+        #         port: &port 8096
+        #       initialDelaySeconds: 20
+        #       periodSeconds: 30
+        #       timeoutSeconds: 20
+        #       failureThreshold: 5
+        #   readiness: *probe
 
 defaultPodOptions:
   nodeSelector:
     intel.feature.node.kubernetes.io/gpu: 'true'
-
-service:
-  web:
-    controller: app
-    ports:
-      http:
-        port: *port
-
-route:
-  main:
-    enabled: true
-    kind: HTTPRoute
-    parentRefs:
-      - name: traefik-private-default
-        namespace: network
-        sectionName: https-wildcard-secret-private-domain
-      - name: traefik-public-default
-        namespace: network
-        sectionName: https-jellyfin
-    hostnames:
-      - "jellyfin.${SECRET_PRIVATE_DOMAIN}"
-      - "jellyfin.${SECRET_PUBLIC_DOMAIN1}"
-    rules:
-      - backendRefs:
-        - name: jellyfin
-          port: *port
-
-
 
 persistence:
   config:
