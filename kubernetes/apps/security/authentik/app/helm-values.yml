@@ -1,0 +1,36 @@
+
+
+authentik:
+  # This sends anonymous usage-data, stack traces on errors and
+  # performance data to sentry.io, and is fully opt-in
+  error_reporting:
+    enabled: false
+  redis:
+      ## Redis host
+    host: "dragonfly.databases.svc.cluster.local"
+
+server:
+  route:
+    main:
+      # -- enable an HTTPRoute resource for the authentik server.
+      # Be aware that this is an early beta of this feature. We don't guarantee this works and is subject to change.
+      enabled: true
+      # -- Set the route apiVersion
+      apiVersion: gateway.networking.k8s.io/v1
+      # -- Set the route kind
+      kind: HTTPRoute
+      # -- Route hostnames
+      hostnames:
+        - "authentik.${SECRET_PUBLIC_DOMAIN1}"
+      # -- Reference to parent gateways
+      parentRefs:
+        - name: traefik-public-default
+          namespace: network
+          sectionName: https-authentik
+
+postgresql:
+  enabled: false
+  auth:
+    password: "ThisIsNotASecurePassword"
+redis:
+  enabled: false

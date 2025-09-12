@@ -87,3 +87,17 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: atuin-tls
+
+    - name: https-authentik
+      protocol: HTTPS
+      hostname: "authentik.${SECRET_PUBLIC_DOMAIN1}"
+      port: 443
+      allowedRoutes:
+        kinds:
+          - kind: HTTPRoute
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: authentik-tls
