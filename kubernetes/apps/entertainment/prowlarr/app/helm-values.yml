@@ -49,19 +49,20 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 
 service:
   web:
     controller: app
+    externalTrafficPolicy: Local
     ports:
       http:
         port: *port
@@ -80,12 +81,18 @@ route:
       - backendRefs:
         - name: *app
           port: *port
+        filters:
+          - type: ExtensionRef
+            extensionRef:
+              group: traefik.io
+              kind: Middleware
+              name: authentik
 
 
 persistence:
   prowlarr-config:
     existingClaim: prowlarr-config
-    globalMounts: 
+    globalMounts:
       - path: /config
         readOnly: false
   media:

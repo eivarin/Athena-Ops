@@ -5,7 +5,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: traefik 
+      chart: traefik
       version: 34.2.0
       sourceRef:
         kind: HelmRepository
@@ -75,6 +75,7 @@ spec:
         enabled: true
         ingressClass: traefik-public
         allowExternalNameServices: true
+        allowCrossNamespace: true
       kubernetesIngress:
         enabled: true
         ingressClass: traefik-public
@@ -85,7 +86,7 @@ spec:
         enabled: true
         nativeLBByDefault: true
         labelselector: "traefik=public"
-    
+
     gatewayClass:
       enabled: true
       name: traefik-public

@@ -47,14 +47,14 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 
 service:
@@ -88,12 +88,18 @@ route:
       - backendRefs:
         - name: tdarr-server-web
           port: *port
+        filters:
+          - type: ExtensionRef
+            extensionRef:
+              group: traefik.io
+              kind: Middleware
+              name: authentik
 
 
 persistence:
   tdarr-server:
     existingClaim: tdarr-server
-    globalMounts: 
+    globalMounts:
       - path: /app/configs
         subPath: config
       - path: /app/server
