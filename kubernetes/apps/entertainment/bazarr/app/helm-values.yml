@@ -1,31 +1,3 @@
-service:
-  web:
-    controller: app
-    ports:
-      http:
-        port: ${port}
-
-route:
-  main:
-    enabled: true
-    kind: HTTPRoute
-    parentRefs:
-      - name: traefik-private-default
-        namespace: network
-        sectionName: https-wildcard-secret-private-domain
-    hostnames:
-      - ${hostname_private}
-    rules:
-      - backendRefs:
-        - name: ${app}
-          port: ${port}
-        filters:
-          - type: ExtensionRef
-            extensionRef:
-              group: traefik.io
-              kind: Middleware
-              name: authentik
-
 controllers:
   app:
     enabled: true
@@ -66,6 +38,35 @@ controllers:
         #       timeoutSeconds: 1
         #       failureThreshold: 3
         #   readiness: *probe
+
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: ${port}
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - ${host}
+    rules:
+      - backendRefs:
+        - name: ${app}
+          port: ${port}
+        filters:
+          - type: ExtensionRef
+            extensionRef:
+              group: traefik.io
+              kind: Middleware
+              name: authentik
+
 
 defaultPodOptions:
   affinity:

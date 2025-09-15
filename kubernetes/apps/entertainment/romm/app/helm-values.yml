@@ -4,10 +4,10 @@ controllers:
     type: deployment
     replicas: 1
     pod:
-      hostname: &app romm
+      hostname: ${app}
       annotations:
-        app.kubernetes.io/name: *app
-        app.kubernetes.io/instance: *app
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
     containers:
       app:
         image:
@@ -35,7 +35,7 @@ controllers:
             spec:
               httpGet:
                 path: /
-                port: &port 8080
+                port: ${port}
               initialDelaySeconds: 0
               periodSeconds: 30
               timeoutSeconds: 5
@@ -66,7 +66,7 @@ service:
     controller: app
     ports:
       http:
-        port: *port
+        port: ${port}
 
 route:
   main:
@@ -77,11 +77,11 @@ route:
         namespace: network
         sectionName: https-wildcard-secret-private-domain
     hostnames:
-      - "romm.${SECRET_PRIVATE_DOMAIN}"
+      - ${host}
     rules:
       - backendRefs:
-        - name: *app
-          port: *port
+        - name: ${app}
+          port: ${port}
 
 
 persistence:

@@ -3,7 +3,7 @@ service:
     controller: app
     ports:
       http:
-        port: &port 5055
+        port: ${port}
 
 route:
   main:
@@ -14,11 +14,11 @@ route:
         namespace: network
         sectionName: https-wildcard-secret-private-domain
     hostnames:
-      - "jellyseerr.${SECRET_PRIVATE_DOMAIN}"
+      - ${host}
     rules:
       - backendRefs:
         - name: jellyseerr
-          port: *port
+          port: ${port}
 
 
 controllers:
@@ -27,10 +27,10 @@ controllers:
     type: deployment
     replicas: 1
     pod:
-      hostname: &app jellyseerr
+      hostname: ${app}
       annotations:
-        app.kubernetes.io/name: *app
-        app.kubernetes.io/instance: *app
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
     containers:
       app:
         image:
@@ -55,7 +55,7 @@ controllers:
         #     spec:
         #       httpGet:
         #         path: /api/v1/status
-        #         port: &port 5055
+        #         port: ${port}
         #       initialDelaySeconds: 0
         #       periodSeconds: 10
         #       timeoutSeconds: 1

@@ -4,10 +4,10 @@ controllers:
     type: deployment
     replicas: 1
     pod:
-      hostname: &app readarr
+      hostname: ${app}
       annotations:
-        app.kubernetes.io/name: *app
-        app.kubernetes.io/instance: *app
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
     containers:
       app:
         image:
@@ -32,7 +32,7 @@ controllers:
             spec:
               httpGet:
                 path: /ping
-                port: &port 8787
+                port: ${port}
               initialDelaySeconds: 0
               periodSeconds: 10
               timeoutSeconds: 1
@@ -49,14 +49,14 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 
 service:
@@ -64,7 +64,7 @@ service:
     controller: app
     ports:
       http:
-        port: *port
+        port: ${port}
 
 route:
   main:
@@ -75,17 +75,17 @@ route:
         namespace: network
         sectionName: https-wildcard-secret-private-domain
     hostnames:
-      - "readarr.${SECRET_PRIVATE_DOMAIN}"
+      - ${host}
     rules:
       - backendRefs:
-        - name: *app
-          port: *port
+        - name: ${app}
+          port: ${port}
 
 
 persistence:
   readarr-config:
     existingClaim: readarr-config
-    globalMounts: 
+    globalMounts:
       - path: /config
         readOnly: false
   media:

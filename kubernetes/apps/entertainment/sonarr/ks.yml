@@ -1,7 +1,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: sonarr
+  name: &name sonarr
   namespace: flux-system
 spec:
   targetNamespace: entertainment
@@ -14,3 +14,8 @@ spec:
     name: home-kubernetes
   dependsOn:
     - name: longhorn
+  postBuild:
+    substitute:
+      app: *name
+      port: "8989"
+      host: "sonarr.${SECRET_PRIVATE_DOMAIN}"

@@ -3,7 +3,7 @@ service:
     controller: app
     ports:
       http:
-        port: &port 8096
+        port: ${port}
 
 route:
   main:
@@ -17,12 +17,12 @@ route:
         namespace: network
         sectionName: https-jellyfin
     hostnames:
-      - "jellyfin.${SECRET_PRIVATE_DOMAIN}"
-      - "jellyfin.${SECRET_PUBLIC_DOMAIN1}"
+      - "${host_priv}"
+      - "${host_pub}"
     rules:
       - backendRefs:
         - name: jellyfin
-          port: *port
+          port: ${port}
 
 controllers:
   app:
@@ -59,7 +59,7 @@ controllers:
         #     spec:
         #       httpGet:
         #         path: /
-        #         port: &port 8096
+        #         port: ${port}
         #       initialDelaySeconds: 20
         #       periodSeconds: 30
         #       timeoutSeconds: 20

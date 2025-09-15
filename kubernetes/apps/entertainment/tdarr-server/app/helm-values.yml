@@ -4,10 +4,10 @@ controllers:
     type: deployment
     replicas: 1
     pod:
-      hostname: &app tdarr-server
+      hostname: ${app}
       annotations:
-        app.kubernetes.io/name: *app
-        app.kubernetes.io/instance: *app
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
     containers:
       app:
         image:
@@ -30,7 +30,7 @@ controllers:
             spec:
               httpGet:
                 path: /api/v2/status
-                port: &port 8265
+                port: ${web_port}
               initialDelaySeconds: 0
               periodSeconds: 10
               timeoutSeconds: 1
@@ -62,7 +62,7 @@ service:
     controller: app
     ports:
       http:
-        port: *port
+        port: ${web_port}
   lb:
     controller: app
     type: LoadBalancer
@@ -71,7 +71,7 @@ service:
       tdarr-server-port:
         enabled: true
         protocol: TCP
-        port: 8266
+        port: ${lb_port}
 
 route:
   main:
@@ -82,11 +82,11 @@ route:
         namespace: network
         sectionName: https-wildcard-secret-private-domain
     hostnames:
-      - "tdarr.${SECRET_PRIVATE_DOMAIN}"
+      - ${host}
     rules:
       - backendRefs:
         - name: tdarr-server-web
-          port: *port
+          port: ${web_port}
         filters:
           - type: ExtensionRef
             extensionRef:

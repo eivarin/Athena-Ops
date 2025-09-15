@@ -7,7 +7,7 @@ controllers:
       successfulJobsHistory: 1
       failedJobsHistory: 1
     pod:
-      hostname: &app recyclarr
+      hostname: ${app}
       securityContext:
         runAsUser: 568
         runAsGroup: 568
@@ -15,8 +15,8 @@ controllers:
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
       annotations:
-        app.kubernetes.io/name: *app
-        app.kubernetes.io/instance: *app
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
     containers:
       app:
         image:
@@ -48,14 +48,14 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 persistence:
   config:

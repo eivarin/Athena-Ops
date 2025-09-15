@@ -1,7 +1,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: recyclarr
+  name: &name recyclarr
   namespace: flux-system
 spec:
   targetNamespace: entertainment
@@ -14,3 +14,6 @@ spec:
     name: home-kubernetes
   dependsOn:
     - name: longhorn
+  postBuild:
+    substitute:
+      app: *name

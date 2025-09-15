@@ -30,7 +30,7 @@ controllers:
             spec:
               httpGet:
                 path: /
-                port: &port 3000
+                port: ${port}
               initialDelaySeconds: 20
               periodSeconds: 30
               timeoutSeconds: 20
@@ -47,14 +47,14 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 
 service:
@@ -62,7 +62,7 @@ service:
     controller: app
     ports:
       http:
-        port: *port
+        port: ${port}
 
 route:
   main:
@@ -73,17 +73,17 @@ route:
         namespace: network
         sectionName: https-wildcard-secret-private-domain
     hostnames:
-      - "jellystat.${SECRET_PRIVATE_DOMAIN}"
+      - ${host}
     rules:
       - backendRefs:
         - name: jellystat
-          port: *port
+          port: ${port}
 
 
 persistence:
   backup-data:
     existingClaim: jellystat-backup-data
-    globalMounts: 
+    globalMounts:
       - path: /app/backend/backup-data
         readOnly: false
 

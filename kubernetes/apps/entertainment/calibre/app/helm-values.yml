@@ -4,10 +4,10 @@ controllers:
     type: deployment
     replicas: 1
     pod:
-      hostname: &name calibre
+      hostname: ${app}
       annotations:
-        app.kubernetes.io/name: *name
-        app.kubernetes.io/instance: *name
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
     containers:
       app:
         image:
@@ -32,7 +32,7 @@ controllers:
             spec:
               httpGet:
                 path: /
-                port: &port 8080
+                port: ${http_port}
               initialDelaySeconds: 20
               periodSeconds: 30
               timeoutSeconds: 20
@@ -65,10 +65,10 @@ service:
     ports:
       http:
         primary: true
-        port: &http-port 8080
+        port: ${http_port}
       webserver:
         enabled: true
-        port: &ws-port 8081
+        port: ${ws_port}
 
 route:
   gui:
@@ -79,11 +79,11 @@ route:
         namespace: network
         sectionName: https-wildcard-secret-private-domain
     hostnames:
-      - "calibre.${SECRET_PRIVATE_DOMAIN}"
+      - "${http_host}"
     rules:
       - backendRefs:
         - name: calibre
-          port: *http-port
+          port: ${http_port}
         filters:
           - type: ExtensionRef
             extensionRef:
@@ -98,11 +98,11 @@ route:
         namespace: network
         sectionName: https-wildcard-secret-private-domain
     hostnames:
-      - "calibre-web.${SECRET_PRIVATE_DOMAIN}"
+      - "${ws_host}"
     rules:
       - backendRefs:
         - name: calibre
-          port: *ws-port
+          port: ${ws_port}
         filters:
           - type: ExtensionRef
             extensionRef:
@@ -114,9 +114,6 @@ persistence:
   config:
     enabled: true
     existingClaim: calibre
-    globalMounts:
-      - path: /config
-        readOnly: false
   media:
     enabled: true
     type: persistentVolumeClaim

@@ -4,10 +4,10 @@ controllers:
     type: deployment
     replicas: 1
     pod:
-      hostname: &app flaresolverr
+      hostname: ${app}
       annotations:
-        app.kubernetes.io/name: *app
-        app.kubernetes.io/instance: *app
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
     containers:
       app:
         image:
@@ -33,7 +33,7 @@ controllers:
             spec:
               httpGet:
                 path: /
-                port: &port 8191
+                port: ${port}
               initialDelaySeconds: 0
               periodSeconds: 10
               timeoutSeconds: 1
@@ -50,14 +50,14 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 
 service:
@@ -65,7 +65,7 @@ service:
     controller: app
     ports:
       http:
-        port: *port
+        port: ${port}
 
 
 

@@ -4,10 +4,10 @@ controllers:
     type: deployment
     replicas: 1
     pod:
-      hostname: &app bookshelf
+      hostname: ${app}
       annotations:
-        app.kubernetes.io/name: *app
-        app.kubernetes.io/instance: *app
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
     containers:
       app:
         image:
@@ -32,7 +32,7 @@ controllers:
             spec:
               httpGet:
                 path: /ping
-                port: &port 8787
+                port: ${port}
               initialDelaySeconds: 0
               periodSeconds: 10
               timeoutSeconds: 1
@@ -64,7 +64,7 @@ service:
     controller: app
     ports:
       http:
-        port: *port
+        port: ${port}
 
 route:
   main:
@@ -75,12 +75,12 @@ route:
         namespace: network
         sectionName: https-wildcard-secret-private-domain
     hostnames:
-      - "bookshelf.${SECRET_PRIVATE_DOMAIN}"
-      - "readarr.${SECRET_PRIVATE_DOMAIN}"
+      - "${http_host_1}"
+      - "${http_host_2}"
     rules:
       - backendRefs:
-        - name: *app
-          port: *port
+        - name: ${app}
+          port: ${port}
         filters:
           - type: ExtensionRef
             extensionRef:
