@@ -20,9 +20,11 @@ controllers:
           pullPolicy: IfNotPresent
 
         env:
-          TZ: Europe/Lisbon
-          JWT_SECRET_KEY: ${SECRET_KITCHENOWL_JWT_SECRET_KEY}
-          FRONT_URL: https://kitchenowl.${SECRET_PUBLIC_DOMAIN1}
+          TZ: ${TIMEZONE}
+
+        envFrom:
+          - secretRef:
+              name: kitchenowl-secrets
 
         resources:
           requests:
@@ -52,14 +54,14 @@ defaultPodOptions:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "1"
         - weight: 2
           preference:
             matchExpressions:
               - key: node-priority
                 operator: In
-                values: 
+                values:
                 - "2"
 service:
   kitchenowl:
