@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/eivarin/nextcloud
-  tag: 30.0.6-fpm-alpine@sha256:737671470eb32624b6c71765b0323d27f24061911c8ed23696097d480838fce7
+  tag: 31.0.8-fpm-alpine
 nginx:
   enabled: true
   # resources:
