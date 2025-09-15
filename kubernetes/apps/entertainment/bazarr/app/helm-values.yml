@@ -3,7 +3,7 @@ service:
     controller: app
     ports:
       http:
-        port: &port 6767
+        port: ${port}
 
 route:
   main:
@@ -14,11 +14,11 @@ route:
         namespace: network
         sectionName: https-wildcard-secret-private-domain
     hostnames:
-      - "bazarr.${SECRET_PRIVATE_DOMAIN}"
+      - ${hostname_private}
     rules:
       - backendRefs:
-        - name: *app
-          port: *port
+        - name: ${app}
+          port: ${port}
         filters:
           - type: ExtensionRef
             extensionRef:
@@ -32,10 +32,10 @@ controllers:
     type: deployment
     replicas: 1
     pod:
-      hostname: &app bazarr
+      hostname: ${app}
       annotations:
-        app.kubernetes.io/name: *app
-        app.kubernetes.io/instance: *app
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
     containers:
       app:
         image:
@@ -60,7 +60,7 @@ controllers:
         #     spec:
         #       httpGet:
         #         path: /
-        #         port: &port 6767
+        #         port: ${port}
         #       initialDelaySeconds: 0
         #       periodSeconds: 10
         #       timeoutSeconds: 1
@@ -87,11 +87,8 @@ defaultPodOptions:
                 - "2"
 
 persistence:
-  bazarr-config:
+  config:
     existingClaim: bazarr-config
-    globalMounts:
-      - path: /config
-        readOnly: false
   media:
     enabled: true
     type: persistentVolumeClaim
