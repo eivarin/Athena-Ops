@@ -60,12 +60,12 @@ route:
       - backendRefs:
         - name: ${app}
           port: ${port}
-        filters:
-          - type: ExtensionRef
-            extensionRef:
-              group: traefik.io
-              kind: Middleware
-              name: authentik
+        # filters:
+        #   - type: ExtensionRef
+        #     extensionRef:
+        #       group: traefik.io
+        #       kind: Middleware
+        #       name: authentik
 
 
 defaultPodOptions:

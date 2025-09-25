@@ -84,12 +84,12 @@ route:
       - backendRefs:
         - name: calibre
           port: ${http_port}
-        filters:
-          - type: ExtensionRef
-            extensionRef:
-              group: traefik.io
-              kind: Middleware
-              name: authentik
+        # filters:
+        #   - type: ExtensionRef
+        #     extensionRef:
+        #       group: traefik.io
+        #       kind: Middleware
+        #       name: authentik
   webserver:
     enabled: true
     kind: HTTPRoute
@@ -103,12 +103,12 @@ route:
       - backendRefs:
         - name: calibre
           port: ${ws_port}
-        filters:
-          - type: ExtensionRef
-            extensionRef:
-              group: traefik.io
-              kind: Middleware
-              name: authentik
+        # filters:
+        #   - type: ExtensionRef
+        #     extensionRef:
+        #       group: traefik.io
+        #       kind: Middleware
+        #       name: authentik
 
 persistence:
   config:
