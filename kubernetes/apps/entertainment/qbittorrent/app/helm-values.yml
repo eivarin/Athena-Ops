@@ -65,7 +65,7 @@ service:
   web:
     controller: app
     annotations:
-      traefik.io/service.passHostHeader: "true"
+      traefik.io/service.passHostHeader: "false"
     ports:
       http:
         port: ${webui_port}
