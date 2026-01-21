@@ -28,9 +28,10 @@ controllers:
             memory: 100Mi
           limits:
             memory: 500Mi
-        securityContext:
-          allowPrivilegeEscalation: true
-          readOnlyRootFilesystem: false
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: ["ALL"]}
 
         # probes:
         #   liveness: &probe
@@ -76,6 +77,12 @@ route:
 
 
 defaultPodOptions:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+    fsGroupChangePolicy: OnRootMismatch
   affinity:
     nodeAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
