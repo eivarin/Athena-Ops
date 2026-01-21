@@ -55,7 +55,6 @@ port = 8080
 enabled = true
 url = "http://prowlarr.default.svc:80"
 api_key = ""
-reject_torrents_on_url_error = true
 
 # Title-based scoring rules
 [[indexers.title_scoring_rules]]
