@@ -64,8 +64,6 @@ defaultPodOptions:
 service:
   web:
     controller: app
-    annotations:
-      traefik.io/service.passHostHeader: "false"
     ports:
       http:
         port: ${webui_port}
@@ -91,7 +89,7 @@ route:
       - ${host}
     rules:
       - backendRefs:
-        - name: ${app}
+        - name: ${app}-web
           port: ${webui_port}
 
 
