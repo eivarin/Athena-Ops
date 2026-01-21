@@ -64,6 +64,8 @@ defaultPodOptions:
 service:
   web:
     controller: app
+    annotations:
+      traefik.io/service.passHostHeader: "true"
     ports:
       http:
         port: ${webui_port}
