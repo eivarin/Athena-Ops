@@ -6,7 +6,7 @@ metadata:
 spec:
   targetNamespace: entertainment
   interval: 10m0s
-  retryInterval: 1m
+  retryInterval: 2m
   path: ./kubernetes/apps/entertainment/mediamanager/app
   prune: true
   sourceRef:
