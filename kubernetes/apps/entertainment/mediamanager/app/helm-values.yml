@@ -14,9 +14,9 @@ controllers:
           repository: ghcr.io/maxdorninger/mediamanager/mediamanager
           tag: 1.12.1
           pullPolicy: IfNotPresent
+        command: ["/entrypoint.sh"]
         env:
-          PUID: 1000
-          PGID: 1000
+          CONFIG_DIR: /app/config
           TZ: ${TIMEZONE}
         envFrom:
           - secretRef:
