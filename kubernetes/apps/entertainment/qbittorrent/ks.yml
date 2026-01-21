@@ -17,6 +17,6 @@ spec:
   postBuild:
     substitute:
       app: *name
-      webui-port: "8080"
-      torrent-port: "6881"
+      webui_port: "8080"
+      torrent_port: "6881"
       host: "qbittorrent.${SECRET_PRIVATE_DOMAIN}"

@@ -18,8 +18,8 @@ controllers:
           PUID: 1000
           PGID: 1000
           TZ: ${TIMEZONE}
-          QBT_WEBUI_PORT: ${webui-port}
-          QBT_TORRENTING_PORT: ${torrent-port}
+          QBT_WEBUI_PORT: ${webui_port}
+          QBT_TORRENTING_PORT: ${torrent_port}
         resources:
           requests:
             cpu: 100m
@@ -34,7 +34,7 @@ controllers:
             spec:
               httpGet:
                 path: /
-                port: ${webui-port}
+                port: ${webui_port}
               initialDelaySeconds: 0
               periodSeconds: 10
               timeoutSeconds: 1
@@ -66,15 +66,15 @@ service:
     controller: app
     ports:
       http:
-        port: ${webui-port}
+        port: ${webui_port}
   torrent:
     controller: app
     ports:
       tcp:
-        port: ${torrent-port}
+        port: ${torrent_port}
         propocol: TCP
       udp:
-        port: ${torrent-port}
+        port: ${torrent_port}
         protocol: UDP
 
 route:
@@ -90,7 +90,7 @@ route:
     rules:
       - backendRefs:
         - name: ${app}
-          port: ${webui-port}
+          port: ${webui_port}
 
 
 
