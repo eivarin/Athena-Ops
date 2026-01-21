@@ -15,6 +15,7 @@ resources:
   - ./jellystat/ks.yml
   - ./kavita/ks.yml
   - ./prowlarr/ks.yml
+  - ./qbittorrent/ks.yml
   - ./radarr/ks.yml
   # - ./recyclarr/ks.yml
   - ./romm/ks.yml

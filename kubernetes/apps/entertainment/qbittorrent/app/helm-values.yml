@@ -1,0 +1,110 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+    pod:
+      hostname: ${app}
+      annotations:
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
+    containers:
+      app:
+        image:
+          repository: lscr.io/linuxserver/qbittorrent:5.1.4 
+          tag: 5.1.4
+          pullPolicy: IfNotPresent
+        env:
+          PUID: 1000
+          PGID: 1000
+          TZ: ${TIMEZONE}
+          QBT_WEBUI_PORT: ${webui-port}
+          QBT_TORRENTING_PORT: ${torrent-port}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 500Mi
+          limits:
+            memory: 1Gi
+
+        probes:
+          liveness: &probe
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: ${webui-port}
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probe
+
+
+defaultPodOptions:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: In
+                values:
+                - "1"
+        - weight: 2
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: In
+                values:
+                - "2"
+
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: ${webui-port}
+  torrent:
+    controller: app
+    ports:
+      tcp:
+        port: ${torrent-port}
+        propocol: TCP
+      udp:
+        port: ${torrent-port}
+        protocol: UDP
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - ${host}
+    rules:
+      - backendRefs:
+        - name: ${app}
+          port: ${webui-port}
+
+
+
+persistence:
+  qbittorrent-config:
+    existingClaim: qbittorrent-data
+    globalMounts:
+      - path: /config
+        readOnly: false
+  media:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: entertainment-storage-nfs-media
+    globalMounts:
+      - path: /shared/Media
+        readOnly: false
+
