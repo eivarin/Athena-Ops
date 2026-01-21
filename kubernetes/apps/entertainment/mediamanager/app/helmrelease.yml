@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: mediamanager
 spec:
-  interval: 30m
+  interval: 1m
   chartRef:
     kind: OCIRepository
     name: app-template
