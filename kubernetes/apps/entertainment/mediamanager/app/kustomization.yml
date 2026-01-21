@@ -15,5 +15,7 @@ configMapGenerator:
   - name: mediamanager-entrypoint
     files:
       - ./configmaps/entrypoint.sh
+generatorOptions:
+  disableNameSuffixHash: true
 configurations:
   - ../../../../flux/other/kustomizeconfig-hr.yml
