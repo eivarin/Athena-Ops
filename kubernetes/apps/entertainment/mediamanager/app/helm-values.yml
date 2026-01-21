@@ -27,6 +27,9 @@ controllers:
             memory: 100Mi
           limits:
             memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: true
+          readOnlyRootFilesystem: false
 
         # probes:
         #   liveness: &probe
