@@ -113,8 +113,8 @@ persistence:
     name: mediamanager-entrypoint
     defaultMode: 0755
     advancedMounts:
-      mediamanager:
-        mediamanager:
+      app:
+        app:
           - path: /entrypoint.sh
             subPath: entrypoint.sh
             readOnly: true
