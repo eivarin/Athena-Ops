@@ -72,7 +72,7 @@ service:
     ports:
       tcp:
         port: ${torrent_port}
-        propocol: TCP
+        protocol: TCP
       udp:
         port: ${torrent_port}
         protocol: UDP
