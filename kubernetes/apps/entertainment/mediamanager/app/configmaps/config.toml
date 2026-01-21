@@ -37,10 +37,7 @@ name = "Authentik"
 enabled = true
 host = "http://qbittorrent-web"
 port = 8080
-username = ""
-password = ""
-category_name = "mediamanager"
-category_save_path = "/shared/Media/torrent"
+username = "admin"
 
 # SABnzbd settings
 [torrents.sabnzbd]
