@@ -17,6 +17,7 @@ controllers:
         command: ["/entrypoint.sh"]
         env:
           CONFIG_DIR: /app/config
+          LOG_FILE: /app/media_manager.log
           TZ: ${TIMEZONE}
         envFrom:
           - secretRef:
