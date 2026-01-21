@@ -28,10 +28,10 @@ controllers:
             memory: 100Mi
           limits:
             memory: 500Mi
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: {drop: ["ALL"]}
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: {drop: ["ALL"]}
 
         # probes:
         #   liveness: &probe
