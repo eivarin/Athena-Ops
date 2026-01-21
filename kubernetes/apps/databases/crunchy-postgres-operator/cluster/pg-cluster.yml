@@ -92,6 +92,11 @@ spec:
         - authentik
       password:
         type: AlphaNumeric
+    - name: mediamanager
+      databases:
+        - mediamanager
+      password:
+        type: AlphaNumeric
   backups:
     pgbackrest:
       configuration: &backupConfig []

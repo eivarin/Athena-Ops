@@ -1,0 +1,21 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &name mediamanager
+  namespace: flux-system
+spec:
+  targetNamespace: entertainment
+  interval: 10m0s
+  retryInterval: 1m
+  path: ./kubernetes/apps/entertainment/mediamanager/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  dependsOn:
+    - name: longhorn
+  postBuild:
+    substitute:
+      app: *name
+      port: "8000"
+      host: "mediamanager.${SECRET_PRIVATE_DOMAIN}"

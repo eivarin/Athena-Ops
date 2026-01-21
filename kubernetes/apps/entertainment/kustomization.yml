@@ -5,20 +5,21 @@ resources:
   - ./namespace.yml
   - ./middleware-authentik.yml
   - ./storage/ks.yml
-  - ./bazarr/ks.yml
+  # - ./bazarr/ks.yml
   - ./bookshelf/ks.yml
   - ./calibre/ks.yml
-  - ./deluge/ks.yml
+  # - ./deluge/ks.yml
   - ./flaresolverr/ks.yml
   - ./jellyfin/ks.yml
   - ./jellyseerr/ks.yml
   - ./jellystat/ks.yml
   - ./kavita/ks.yml
+  - ./mediamanager/ks.yml
   - ./prowlarr/ks.yml
   - ./qbittorrent/ks.yml
-  - ./radarr/ks.yml
+  # - ./radarr/ks.yml
   # - ./recyclarr/ks.yml
   - ./romm/ks.yml
   - ./sabnzbd/ks.yml
-  - ./sonarr/ks.yml
+  # - ./sonarr/ks.yml
   - ./tdarr-server/ks.yml

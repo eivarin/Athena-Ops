@@ -1,0 +1,122 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+    pod:
+      hostname: ${app}
+      annotations:
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
+    containers:
+      app:
+        image:
+          repository: ghcr.io/maxdorninger/mediamanager/mediamanager
+          tag: 1.12.1
+          pullPolicy: IfNotPresent
+        env:
+          PUID: 1000
+          PGID: 1000
+          TZ: ${TIMEZONE}
+        envFrom:
+          - secretRef:
+              name: mediamanager-secrets
+        resources:
+          requests:
+            cpu: 50m
+            memory: 100Mi
+          limits:
+            memory: 500Mi
+
+        # probes:
+        #   liveness: &probe
+        #     enabled: true
+        #     custom: true
+        #     spec:
+        #       httpGet:
+        #         path: /
+        #         port: ${port}
+        #       initialDelaySeconds: 0
+        #       periodSeconds: 10
+        #       timeoutSeconds: 1
+        #       failureThreshold: 3
+        #   readiness: *probe
+
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: ${port}
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - ${host}
+    rules:
+      - backendRefs:
+        - name: ${app}
+          port: ${port}
+        # filters:
+        #   - type: ExtensionRef
+        #     extensionRef:
+        #       group: traefik.io
+        #       kind: Middleware
+        #       name: authentik
+
+
+defaultPodOptions:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: In
+                values:
+                - "1"
+        - weight: 2
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: In
+                values:
+                - "2"
+
+persistence:
+  cache:
+    type: emptyDir
+    sizeLimit: 1Gi
+    globalMounts:
+      - path: /.cache
+  media:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: entertainment-storage-nfs-media
+    globalMounts:
+      - path: /shared/Media
+        readOnly: false
+  config:
+    type: configMap
+    name: mediamanager-config
+    globalMounts:
+      - path: /app/config
+  entrypoint:
+    type: configMap
+    name: mediamanager-entrypoint
+    defaultMode: 0755
+    advancedMounts:
+      mediamanager:
+        mediamanager:
+          - path: /entrypoint.sh
+            subPath: entrypoint.sh
+            readOnly: true
+  metadata:
+    existingClaim: mediamanager-metadata

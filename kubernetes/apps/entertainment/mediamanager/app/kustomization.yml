@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./externalsecret.yml
+  - ./helmrelease.yml
+configMapGenerator:
+  - name: mediamanager-helm-values
+    files:
+      - values.yaml=./helm-values.yml
+  - name: mediamanager-config
+    files:
+      - ./configmaps/config.toml
+  - name: mediamanager-entrypoint
+    files:
+      - ./configmaps/entrypoint.sh
+configurations:
+  - ../../../../flux/other/kustomizeconfig-hr.yml
