@@ -49,8 +49,8 @@ port = 8080
 # Prowlarr settings
 [indexers.prowlarr]
 enabled = true
-url = "http://prowlarr.default.svc:80"
-api_key = ""
+url = "http://prowlarr:9696"
+
 
 # Title-based scoring rules
 [[indexers.title_scoring_rules]]
