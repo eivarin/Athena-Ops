@@ -84,8 +84,9 @@ libraries = ["ALL_MOVIES"]
 rule_names = ["prefer_h265", "avoid_cam"]
 
 # # Metadata relay
-# [metadata]
-# [metadata.tmdb]
+[metadata]
+[metadata.tmdb]
+primary_languages = ["pt", "en", "jp"]
 # tmdb_relay_url = "http://mediamanager-metadata-relay.default.svc.cluster.local:8000/tmdb"
 
 # [metadata.tvdb]
