@@ -12,7 +12,7 @@ controllers:
       app:
         image:
           repository: lscr.io/linuxserver/qbittorrent
-          tag: 5.1.4
+          tag: 20.04.1
           pullPolicy: IfNotPresent
         env:
           PUID: 1000
