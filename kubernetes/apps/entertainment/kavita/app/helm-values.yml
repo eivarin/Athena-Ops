@@ -36,7 +36,7 @@ controllers:
       app:
         image:
           repository: lscr.io/linuxserver/kavita
-          tag: 0.8.7
+          tag: 0.8.9
           pullPolicy: IfNotPresent
         env:
           PUID: 1000
