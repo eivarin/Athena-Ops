@@ -71,7 +71,6 @@ defaultPodOptions:
 
 service:
   app:
-    nameOverride: *app
     controller: app
     ports:
       http:
