@@ -38,7 +38,7 @@ controllers:
       app:
         image:
           repository: jellyfin/jellyfin
-          tag: 10.11.0
+          tag: 10.11.6
           pullPolicy: IfNotPresent
         env:
           PUID: 1000
