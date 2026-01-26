@@ -90,7 +90,7 @@ route:
 
 persistence:
   sonarr-config:
-    existingClaim: sonarr-config
+    existingClaim: sonarr-data
     globalMounts:
       - path: /config
         readOnly: false
