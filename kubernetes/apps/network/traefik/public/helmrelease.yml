@@ -6,7 +6,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: 34.2.0
+      version: 39.0.0
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -22,10 +22,13 @@ spec:
       isDefaultClass: false
       name: "traefik-public"
 
-    globalArguments:
-      - "--api.insecure=true"
-      - "--global.sendanonymoususage=false"
-      - "--global.checknewversion=false"
+    global:
+      checkNewVersion: false
+      sendAnonymousUsage: false
+
+    api:
+      dashboard: true
+      insecure: true
 
     additionalArguments:
       - "--serversTransport.insecureSkipVerify=true"
@@ -49,24 +52,27 @@ spec:
           moduleName: "github.com/tomMoulard/fail2ban"
           version: "v0.8.3"
 
+    
     ports:
       traefik:
         expose:
           default: true
       web:
         port: 80
-        redirections:
-          entryPoint:
-            to: websecure
-            scheme: https
-            permanent: true
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
       websecure:
         port: 443
         http3:
           enabled: true
-        advertisedPort: 4443
-        tls:
-          enabled: true
+        http:
+          tls:
+            enabled: true
+
     gateway:
       enabled: false
 
@@ -85,7 +91,7 @@ spec:
       kubernetesGateway:
         enabled: true
         nativeLBByDefault: true
-        labelselector: "traefik=public"
+        labelSelector: "traefik=public"
 
     gatewayClass:
       enabled: true

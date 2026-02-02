@@ -6,7 +6,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: 34.2.0
+      version: 39.0.0
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -22,10 +22,14 @@ spec:
       isDefaultClass: true
       name: "traefik-private"
 
-    globalArguments:
-      - "--api.insecure=true"
-      - "--global.sendanonymoususage=false"
-      - "--global.checknewversion=false"
+    global:
+      checkNewVersion: false
+      sendAnonymousUsage: false
+
+    api:
+      dashboard: true
+      insecure: true
+
 
     additionalArguments:
       - "--serversTransport.insecureSkipVerify=true"
@@ -55,18 +59,19 @@ spec:
           default: true
       web:
         port: 80
-        redirections:
-          entryPoint:
-            to: websecure
-            scheme: https
-            permanent: true
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
       websecure:
         port: 443
         http3:
           enabled: true
-        advertisedPort: 4443
-        tls:
-          enabled: true
+        http:
+          tls:
+            enabled: true
 
     gateway:
       enabled: false
@@ -86,7 +91,7 @@ spec:
       kubernetesGateway:
         enabled: true
         nativeLBByDefault: true
-        labelselector: "traefik=private"
+        labelSelector: "traefik=private"
 
     gatewayClass:
       enabled: true
