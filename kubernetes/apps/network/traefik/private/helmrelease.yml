@@ -91,7 +91,7 @@ spec:
       kubernetesGateway:
         enabled: true
         nativeLBByDefault: true
-        labelselector: "traefik=private"
+        labelSelector: "traefik=private"
 
     gatewayClass:
       enabled: true

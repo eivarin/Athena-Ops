@@ -27,8 +27,7 @@ spec:
       sendAnonymousUsage: false
 
     api:
-      dashboard:
-        enabled: true
+      dashboard: true
       insecure: true
 
     additionalArguments:
@@ -92,7 +91,7 @@ spec:
       kubernetesGateway:
         enabled: true
         nativeLBByDefault: true
-        labelselector: "traefik=public"
+        labelSelector: "traefik=public"
 
     gatewayClass:
       enabled: true
