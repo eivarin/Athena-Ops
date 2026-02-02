@@ -70,6 +70,13 @@
       ],
       "matchUpdateTypes": ["major", "minor"],
       "automerge": false
+    },
+    {
+      "description": "Auto-merge Mise Tools",
+      "matchManagers": ["mise"],
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["minor", "patch"]
     }
   ]
 }
