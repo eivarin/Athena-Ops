@@ -27,8 +27,7 @@ spec:
       sendAnonymousUsage: false
 
     api:
-      dashboard:
-        enabled: true
+      dashboard: true
       insecure: true
 
 
@@ -60,18 +59,19 @@ spec:
           default: true
       web:
         port: 80
-        redirections:
-          entryPoint:
-            to: websecure
-            scheme: https
-            permanent: true
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
       websecure:
         port: 443
         http3:
           enabled: true
-        advertisedPort: 4443
-        tls:
-          enabled: true
+        http:
+          tls:
+            enabled: true
 
     gateway:
       enabled: false
