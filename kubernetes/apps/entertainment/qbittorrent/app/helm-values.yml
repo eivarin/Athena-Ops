@@ -20,6 +20,11 @@ controllers:
           TZ: ${TIMEZONE}
           QBT_WEBUI_PORT: ${webui_port}
           QBITTORRENT__BT_PORT: ${torrent_port}
+          QBT_Preferences__WebUI__AlternativeUIEnabled: false
+          QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+          QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
+            192.168.0.0/16, 0.0.0.0/0
+          QBT_Preferences__WebUI__LocalHostAuth: false
         resources:
           requests:
             cpu: 100m
