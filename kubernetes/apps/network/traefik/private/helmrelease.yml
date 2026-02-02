@@ -22,10 +22,15 @@ spec:
       isDefaultClass: true
       name: "traefik-private"
 
-    globalArguments:
-      - "--api.insecure=true"
-      - "--global.sendanonymoususage=false"
-      - "--global.checknewversion=false"
+    global:
+      checkNewVersion: false
+      sendAnonymousUsage: false
+
+    api:
+      dashboard:
+        enabled: true
+      insecure: true
+
 
     additionalArguments:
       - "--serversTransport.insecureSkipVerify=true"
