@@ -1,0 +1,21 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &name spoolman
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  interval: 10m0s
+  retryInterval: 2m
+  path: ./kubernetes/apps/default/spoolman/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  dependsOn:
+    - name: longhorn
+  postBuild:
+    substitute:
+      app: *name
+      port: "8000"
+      host: "spoolman.${SECRET_PRIVATE_DOMAIN}"

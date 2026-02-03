@@ -1,0 +1,90 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+    pod:
+      hostname: ${app}
+      annotations:
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
+    containers:
+      app:
+        image:
+          repository: ghcr.io/donkie/spoolman
+          tag: 0.23.0
+        command:
+          - uvicorn
+          - spoolman.main:app
+          - --host
+          - 0.0.0.0
+        env:
+          SPOOLMAN_PORT: ${port}
+        resources:
+          requests:
+            cpu: 12m
+            memory: 128M
+          limits:
+            memory: 512M
+
+service:
+  web:
+    controller: app
+    ports:
+      http:
+        port: ${port}
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - ${host}
+    rules:
+      - backendRefs:
+        - name: ${app}
+          port: ${port}
+        # filters:
+        #   - type: ExtensionRef
+        #     extensionRef:
+        #       group: traefik.io
+        #       kind: Middleware
+        #       name: authentik
+
+
+defaultPodOptions:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 100
+    fsGroup: 100
+    fsGroupChangePolicy: OnRootMismatch
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: In
+                values:
+                - "1"
+        - weight: 2
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: In
+                values:
+                - "2"
+
+persistence:
+  config:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: spoolman-config
+    globalMounts:
+      - path: /home/app/.local/share/spoolman
