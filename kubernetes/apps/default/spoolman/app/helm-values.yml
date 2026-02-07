@@ -12,7 +12,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/donkie/spoolman
-          tag: 0.23.0
+          tag: 0.23.1
         command:
           - uvicorn
           - spoolman.main:app
