@@ -12,7 +12,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/linuxserver/calibre
-          tag: v7.26.0-ls326
+          tag: v8.0.1-ls326
           pullPolicy: IfNotPresent
         env:
           PUID: 1000
