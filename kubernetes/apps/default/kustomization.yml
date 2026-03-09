@@ -9,4 +9,4 @@ resources:
   - ./linkwarden/ks.yml
   - ./syncthing/ks.yml
   - ./spoolman/ks.yml
-  # - ./nextcloud/ks.yml
+  - ./nextcloud/ks.yml
