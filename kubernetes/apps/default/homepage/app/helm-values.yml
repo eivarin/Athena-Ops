@@ -84,7 +84,7 @@ persistence:
     globalMounts:
       - path: /app/config
         subPath: Homepage/config
-      - path: /app/public
-        subPath: Homepage/public
+      - path: /app/public/icons
+        subPath: Homepage/public/icons
 serviceAccount:
   homepage: {}
