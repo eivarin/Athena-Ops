@@ -1,7 +1,7 @@
 image:
   registry: docker.io
   repository: nextcloud
-  tag: 31.0.14-fpm-alpine
+  tag: 32.0.7-fpm-alpine
 nginx:
   enabled: true
   # resources:
