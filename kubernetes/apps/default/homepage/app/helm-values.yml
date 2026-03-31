@@ -83,6 +83,8 @@ persistence:
     path: /Documents
     globalMounts:
       - path: /app/config
-        subPath: Homepage
+        subPath: Homepage/config
+      - path: /app/public
+        subPath: Homepage/public
 serviceAccount:
   homepage: {}
