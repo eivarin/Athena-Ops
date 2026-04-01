@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./env
+  - pv.yml
+  - pvc.yml
+  - ./helmrelease.yml
+configMapGenerator:
+  - name: immich-helm-values
+    files:
+      - values.yaml=./helm-values.yml
+configurations:
+  - ../../../../flux/other/kustomizeconfig-hr.yml

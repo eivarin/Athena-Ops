@@ -1,0 +1,109 @@
+controllers:
+  immich:
+    enabled: true
+    type: deployment
+    replicas: 1
+    pod:
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: 'true'
+      hostname: ${app}
+      annotations:
+        app.kubernetes.io/name: ${app}
+        app.kubernetes.io/instance: ${app}
+    containers:
+      app:
+        image:
+          repository: ghcr.io/immich-app/immich-server
+          tag: v2.6.3
+          pullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: immich-secrets
+          - configMapRef:
+              name: immich-configmap
+        resources:
+          requests: &requests
+            cpu: 100m
+            memory: 250Mi
+          limits:
+            memory: 4Gi
+            gpu.intel.com/i915: 1
+  machine-learning:
+    pod:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: node-priority
+                    operator: In
+                    values:
+                    - "1"
+            - weight: 2
+              preference:
+                matchExpressions:
+                  - key: node-priority
+                    operator: In
+                    values:
+                    - "2"
+    containers:
+      app:
+        image:
+          repository: ghcr.io/immich-app/immich-machine-learning
+          tag: v2.6.3
+        envFrom: *envFrom
+        resources:
+          requests: *requests
+          limits:
+            memory: 8Gi
+
+
+service:
+  immich:
+    controller: immich
+    ports:
+      http:
+        port: ${web_port}
+  machine-learning:
+    controller: machine-learning
+    ports:
+      http:
+        port: ${ml_port}
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+      - name: traefik-public-default
+        namespace: network
+        sectionName: https-immich
+    hostnames:
+      - "${host_priv}"
+      - "${host_pub}"
+    rules:
+      - backendRefs:
+        - name: immich
+          port: ${web_port}
+
+persistence:
+  cache:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: immich-cache-ml
+    advancedMounts:
+      machine-learning:
+        app:
+          - path: /cache
+  media:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: immich
+    globalMounts:
+      - path: /usr/src/app/upload
+        readOnly: false
+        subPath: DCIM

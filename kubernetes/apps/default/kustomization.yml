@@ -5,6 +5,7 @@ resources:
   - ./actual/ks.yml
   - ./atuin/ks.yml
   - ./homepage/ks.yml
+  - ./immich/ks.yml
   - ./kitchenowl/ks.yml
   - ./linkwarden/ks.yml
   - ./syncthing/ks.yml

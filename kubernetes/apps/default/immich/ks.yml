@@ -1,0 +1,23 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &name immich
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  interval: 10m0s
+  retryInterval: 2m
+  path: ./kubernetes/apps/default/immich/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  dependsOn:
+    - name: longhorn
+  postBuild:
+    substitute:
+      app: *name
+      web_port: "2283"
+      ml_port: "3003"
+      host_priv: "immich.${SECRET_PRIVATE_DOMAIN}"
+      host_pub: "immich.${SECRET_PUBLIC_DOMAIN1}"
