@@ -101,3 +101,17 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: authentik-tls
+
+    - name: https-immich
+      protocol: HTTPS
+      hostname: "immich.${SECRET_PUBLIC_DOMAIN1}"
+      port: 443
+      allowedRoutes:
+        kinds:
+          - kind: HTTPRoute
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: immich-tls
