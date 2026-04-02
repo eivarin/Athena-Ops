@@ -19,6 +19,7 @@ spec:
         selector:
           dnsZones:
             - "${SECRET_PUBLIC_DOMAIN1}"
+            - "${SECRET_PUBLIC_DOMAIN2}"
       - http01:
           gatewayHTTPRoute:
             parentRefs:
@@ -28,7 +29,6 @@ spec:
         selector:
           dnsZones:
             - "vw.${SECRET_PUBLIC_DOMAIN1}"
-            - "${SECRET_PUBLIC_DOMAIN2}"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
