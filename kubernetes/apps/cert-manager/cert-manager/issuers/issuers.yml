@@ -28,6 +28,7 @@ spec:
         selector:
           dnsZones:
             - "vw.${SECRET_PUBLIC_DOMAIN1}"
+            - "${SECRET_PUBLIC_DOMAIN2}"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
