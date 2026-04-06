@@ -77,6 +77,23 @@ spec:
           - backendRefs:
             - name: uptime-kuma
               port: *port
+      public:
+        enabled: true
+        kind: HTTPRoute
+        parentRefs:
+          - name: traefik-public-default
+            namespace: network
+            sectionName: https-kuma
+        hostnames:
+          - "${host_pub}"
+        rules:
+          - backendRefs:
+            - name: uptime-kuma
+              port: *port
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /status
 
     persistence:
       uptime-kuma-data:
