@@ -115,3 +115,17 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: immich-tls
+    
+    - name: https-kuma
+      protocol: HTTPS
+      hostname: "kuma.${SECRET_PUBLIC_DOMAIN1}"
+      port: 443
+      allowedRoutes:
+        kinds:
+          - kind: HTTPRoute
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: kuma-tls

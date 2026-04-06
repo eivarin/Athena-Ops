@@ -47,22 +47,36 @@ spec:
           http:
             port: *port
 
-    ingress:
-      uptime-kuma:
-        annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        className: traefik-private
-        hosts:
-          - host: &uptime-kuma-path kuma.${SECRET_PRIVATE_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: uptime-kuma
-                  port: http
-        tls:
-          - secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
-            hosts:
-              - *uptime-kuma-path
+    # ingress:
+    #   uptime-kuma:
+    #     annotations:
+    #       traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    #     className: traefik-private
+    #     hosts:
+    #       - host: &uptime-kuma-path kuma.${SECRET_PRIVATE_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: uptime-kuma
+    #               port: http
+    #     tls:
+    #       - secretName: ${SECRET_PRIVATE_DOMAIN//./-}-tls
+    #         hosts:
+    #           - *uptime-kuma-path
+    route:
+      main:
+        enabled: true
+        kind: HTTPRoute
+        parentRefs:
+          - name: traefik-private-default
+            namespace: network
+            sectionName: https-wildcard-secret-private-domain
+        hostnames:
+          - "${host_priv}"
+        rules:
+          - backendRefs:
+            - name: uptime-kuma
+              port: *port
 
     persistence:
       uptime-kuma-data:
