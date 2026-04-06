@@ -83,17 +83,13 @@ spec:
         parentRefs:
           - name: traefik-public-default
             namespace: network
-            sectionName: https-kuma
+            sectionName: https-status-wildcard
         hostnames:
           - "${host_pub}"
         rules:
           - backendRefs:
             - name: uptime-kuma
               port: *port
-            matches:
-              - path:
-                  type: PathPrefix
-                  value: /status
 
     persistence:
       uptime-kuma-data:

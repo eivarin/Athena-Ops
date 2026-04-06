@@ -16,4 +16,4 @@ spec:
     substitute:
       app: *name
       host_priv: "kuma.${SECRET_PRIVATE_DOMAIN}"
-      host_pub: "kuma.${SECRET_PUBLIC_DOMAIN1}"
+      host_pub: "*.status.${SECRET_PUBLIC_DOMAIN1}"
