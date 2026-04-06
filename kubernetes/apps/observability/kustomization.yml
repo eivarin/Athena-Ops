@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yml
   - ./kube-prometheus-stack/ks.yml
-  # - ./uptime-kuma/ks.yml
+  - ./uptime-kuma/ks.yml
