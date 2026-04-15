@@ -7,7 +7,7 @@ resources:
   - ./homepage/ks.yml
   - ./immich/ks.yml
   - ./kitchenowl/ks.yml
-  - ./linkwarden/ks.yml
+  # - ./linkwarden/ks.yml
   - ./syncthing/ks.yml
   - ./spoolman/ks.yml
   - ./nextcloud/ks.yml
