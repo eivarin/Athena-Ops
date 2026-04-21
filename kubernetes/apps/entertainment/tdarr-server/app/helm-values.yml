@@ -12,7 +12,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/haveagitgat/tdarr
-          tag: 2.67.01
+          tag: 2.70.01
           pullPolicy: IfNotPresent
         env:
           internalNode: false
