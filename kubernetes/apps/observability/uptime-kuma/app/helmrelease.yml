@@ -89,7 +89,7 @@ spec:
         rules:
           - backendRefs:
             - name: uptime-kuma
-              port: *port
+              port: 3001
 
     persistence:
       uptime-kuma-data:
