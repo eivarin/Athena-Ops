@@ -30,7 +30,7 @@ spec:
               pullPolicy: IfNotPresent
 
             env:
-              TZ: ${TIMEZONE}
+              # TZ: ${TIMEZONE}
               UPTIME_KUMA_PORT: &port 3001
               UPTIME_KUMA_DISABLE_FRAME_SAMEORIGIN: true
 
