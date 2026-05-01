@@ -45,7 +45,7 @@ spec:
         controller: app
         ports:
           http:
-            port: *port
+            port: 3001
 
     # ingress:
     #   uptime-kuma:
@@ -76,7 +76,7 @@ spec:
         rules:
           - backendRefs:
             - name: uptime-kuma
-              port: *port
+              port: 3001
       public:
         enabled: true
         kind: HTTPRoute
