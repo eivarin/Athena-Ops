@@ -54,7 +54,8 @@
         "traefik",
         "kube-prometheus-stack",
         "longhorn",
-        "dragonflydb"
+        "dragonflydb",
+        "gateway-api-source"
       ],
       "matchUpdateTypes": ["major", "minor"],
       "automerge": false
