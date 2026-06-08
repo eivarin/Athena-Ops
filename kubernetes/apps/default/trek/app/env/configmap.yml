@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: trek-configmap
+data:
+  TZ: Europe/Lisbon
+  LOG_LEVEL: INFO
+  APP_URL: "https://trek.${SECRET_PRIVATE_DOMAIN}"

@@ -1,0 +1,84 @@
+controllers:
+  app:
+    enabled: true
+    type: deployment
+    replicas: 1
+    pod:
+      hostname: &app trek
+      annotations:
+        app.kubernetes.io/name: *app
+        app.kubernetes.io/instance: *app
+
+    containers:
+      app:
+        image:
+          repository: mauriceboe/trek
+          tag: 3.0.22
+          pullPolicy: IfNotPresent
+        envFrom:
+          - secretRef:
+              name: trek-secrets
+          - configMapRef:
+              name: trek-configmap
+        resources:
+          requests:
+            cpu: 50m
+            memory: 200Mi
+          limits:
+            memory: 500Mi
+
+defaultPodOptions:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: In
+                values: 
+                - "1"
+        - weight: 2
+          preference:
+            matchExpressions:
+              - key: node-priority
+                operator: In
+                values: 
+                - "2"
+
+service:
+  app:
+    controller: app
+    ports:
+      http:
+        port: &port 3000
+
+route:
+  main:
+    enabled: true
+    kind: HTTPRoute
+    parentRefs:
+      - name: traefik-private-default
+        namespace: network
+        sectionName: https-wildcard-secret-private-domain
+    hostnames:
+      - "trek.${SECRET_PRIVATE_DOMAIN}"
+    rules:
+      - backendRefs:
+        - name: *app
+          port: *port
+
+
+persistence:
+  trek-data:
+    existingClaim: trek-data
+    globalMounts: 
+      - path: /app/data
+        readOnly: false
+  trek-uploads:
+    existingClaim: trek-uploads
+    globalMounts:
+      - path: /app/uploads
+        readOnly: false
+
+

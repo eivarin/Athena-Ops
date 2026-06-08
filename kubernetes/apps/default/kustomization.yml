@@ -11,3 +11,4 @@ resources:
   - ./syncthing/ks.yml
   - ./spoolman/ks.yml
   - ./nextcloud/ks.yml
+  - ./trek/ks.yml
