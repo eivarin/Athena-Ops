@@ -6,6 +6,7 @@ resources:
   - ./env
   - pv.yml
   - pvc.yml
+  - immich-dragonfly.yml
   - ./helmrelease.yml
 configMapGenerator:
   - name: immich-helm-values
