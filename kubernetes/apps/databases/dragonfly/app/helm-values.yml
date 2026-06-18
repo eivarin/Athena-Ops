@@ -118,4 +118,7 @@ rbac:
         - apiGroups: ["dragonflydb.io"]
           resources: ["dragonflies/status"]
           verbs: ["get", "patch", "update"]
+        - apiGroups: [""]
+          resources: ["configmaps"]
+          verbs: ["list", "watch"]
       type: ClusterRole
