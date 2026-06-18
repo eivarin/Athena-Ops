@@ -7,3 +7,4 @@ data:
   TZ: Europe/Lisbon
   LOG_LEVEL: INFO
   APP_URL: "https://trek.${SECRET_PRIVATE_DOMAIN}"
+  ALLOW_INTERNAL_NETWORK: "true"
