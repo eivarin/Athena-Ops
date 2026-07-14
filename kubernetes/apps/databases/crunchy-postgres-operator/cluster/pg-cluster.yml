@@ -5,8 +5,8 @@ kind: PostgresCluster
 metadata:
   name: &name postgres
 spec:
-  postgresVersion: 16
-
+  postgresVersion: 17
+  shutdown: false
   metadata:
     labels:
       crunchy-userinit.ramblurr.github.com/enabled: "true"
@@ -17,6 +17,10 @@ spec:
     metadata:
       annotations:
         lbipam.cilium.io/ips: 10.0.2.201
+  
+  # config:
+  #   parameters:
+  #     shared_preload_libraries: "vchord.so"
 
   # patroni: # turn on sync writes to at least 1 other replica
   #   dynamicConfiguration:
