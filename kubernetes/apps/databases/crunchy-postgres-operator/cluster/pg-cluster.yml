@@ -17,10 +17,11 @@ spec:
     metadata:
       annotations:
         lbipam.cilium.io/ips: 10.0.2.201
+  image: ghcr.io/aaronspruit/crunchy-postgres-vectorchord:ubi9-17.10-2621
   
-  # config:
-  #   parameters:
-  #     shared_preload_libraries: "vchord.so"
+  config:
+    parameters:
+      shared_preload_libraries: "vchord.so"
 
   # patroni: # turn on sync writes to at least 1 other replica
   #   dynamicConfiguration:
