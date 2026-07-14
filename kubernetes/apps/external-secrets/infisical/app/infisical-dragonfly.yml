@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/dragonflydb.io/dragonfly_v1alpha1.json
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: infisical-dragonfly
+spec:
+  image: ghcr.io/dragonflydb/dragonfly:ubuntu-v1.39.0-amd64
+  replicas: 1
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "feature.node.kubernetes.io/cpu-cpuid.AVX"
+                operator: In
+                values:
+                  - "true"
+  env:
+    - name: MAX_MEMORY
+      valueFrom:
+        resourceFieldRef:
+          resource: limits.memory
+          divisor: 1Mi
+  args:
+    - --maxmemory=$(MAX_MEMORY)Mi
+    - --proactor_threads=1
+    - --cluster_mode=emulated
+    - --default_lua_flags=allow-undeclared-keys
+  resources:
+    requests:
+      cpu: 100m
+    limits:
+      memory: 256Mi

@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./authsecrets.sops.yml
   - ./externalsecret.yml
+  - ./infisical-dragonfly.yml
   - ./helmrelease.yml
 configMapGenerator:
   - name: infisical-helm-values
