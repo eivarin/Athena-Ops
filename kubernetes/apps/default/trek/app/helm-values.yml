@@ -13,7 +13,7 @@ controllers:
       app:
         image:
           repository: mauriceboe/trek
-          tag: 3.4.0
+          tag: 3.4.1
           pullPolicy: IfNotPresent
         envFrom:
           - secretRef:
