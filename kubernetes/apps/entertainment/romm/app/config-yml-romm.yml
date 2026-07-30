@@ -52,4 +52,19 @@ data:
 
     # The folder name where your roms are located
     filesystem: {} # { roms_folder: 'roms' } For example if your folder structure is /home/user/library/roms_folder
+    scan:
+      media:
+        - box2d
+        - box2d_back
+        - box2d_side
+        - box3d
+        - physical
+        - miximage
+        - screenshot
+        - manual
+      priority:
+        artwork:
+          - "ss" # prefer ScreenScraper artwork
+          - "igdb"
+
 
