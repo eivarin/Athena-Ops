@@ -14,7 +14,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/immich-app/immich-server
-          tag: v3.0.3
+          tag: v3.1.0
           pullPolicy: IfNotPresent
         envFrom: &envFrom
           - secretRef:
@@ -51,7 +51,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/immich-app/immich-machine-learning
-          tag: v3.0.3
+          tag: v3.1.0
         envFrom: *envFrom
         resources:
           requests: *requests
