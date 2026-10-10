@@ -13,7 +13,7 @@ controllers:
       app:
         image:
           repository: syncthing/syncthing
-          tag: 2.1.5
+          tag: 2.1.6
           pullPolicy: IfNotPresent
         env:
           PUID: "1000"
