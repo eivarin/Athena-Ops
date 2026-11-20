@@ -37,8 +37,8 @@ controllers:
     containers:
       app:
         image:
-          repository: jellyfin/jellyfin
-          tag: 10.11.11
+          repository: ghcr.io/jellyfin/jellyfin
+          tag: 12.4
           pullPolicy: IfNotPresent
         env:
           PUID: 1000
